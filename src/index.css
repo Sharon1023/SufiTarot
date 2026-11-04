@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-midnight-950 text-midnight-50 font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(6, 78, 59, 0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(26, 31, 69, 0.6) 0%, transparent 70%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .text-gold-gradient {
+    @apply bg-gold-shimmer bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .border-gold-gradient {
+    border-image: linear-gradient(135deg, #fcd34d, #d97706, #fcd34d) 1;
+  }
+
+  .glass {
+    @apply bg-midnight-800/40 backdrop-blur-md border border-gold-400/15;
+  }
+
+  .glass-strong {
+    @apply bg-midnight-800/70 backdrop-blur-lg border border-gold-400/20;
+  }
+
+  .starfield {
+    background-image:
+      radial-gradient(1px 1px at 25% 15%, rgba(252, 211, 77, 0.8), transparent),
+      radial-gradient(1px 1px at 50% 40%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 75% 25%, rgba(252, 211, 77, 0.6), transparent),
+      radial-gradient(1.5px 1.5px at 15% 65%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1px 1px at 85% 75%, rgba(252, 211, 77, 0.7), transparent),
+      radial-gradient(1px 1px at 40% 85%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 60% 10%, rgba(252, 211, 77, 0.5), transparent),
+      radial-gradient(1.5px 1.5px at 10% 30%, rgba(255, 255, 255, 0.3), transparent),
+      radial-gradient(1px 1px at 90% 50%, rgba(252, 211, 77, 0.6), transparent);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .sufi-pattern {
+    background-image:
+      repeating-conic-gradient(from 0deg at 50% 50%, rgba(252, 211, 77, 0.04) 0deg, transparent 30deg, rgba(16, 185, 129, 0.04) 60deg, transparent 90deg);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .perspective { perspective: 1000px; }
+}
