@@ -9,6 +9,7 @@ import {
   Users,
   Moon,
   Sparkles,
+  Sun,
 } from 'lucide-react';
 import { CARDS, SUITS } from '../data/cards';
 import type { CardData, Orientation, LifeArea } from '../data/cards';
@@ -295,6 +296,56 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
             </div>
           )}
         </section>
+
+        {/* daily meditation & affirmation */}
+        {card.meditation && (
+          <section className="mt-8 animate-fade-in-up rounded-3xl border border-gold-400/15 bg-midnight-800/30 p-6 sm:p-8">
+            <div className="mb-5 flex items-center gap-2">
+              <Sun className="h-5 w-5 text-gold-300" />
+              <h3 className="font-serif text-lg font-semibold text-gold-100">每日冥想與肯定句</h3>
+            </div>
+
+            {/* contemplations */}
+            <div className="mb-6">
+              <h4 className="mb-3 font-serif text-base font-medium text-gold-200">心靈反思問題</h4>
+              <ul className="flex flex-col gap-3">
+                {card.meditation.contemplations.map((q, i) => (
+                  <li
+                    key={i}
+                    style={{ animationDelay: `${i * 100}ms` }}
+                    className="flex items-start gap-3 animate-fade-in-up rounded-2xl border border-gold-400/10 bg-midnight-900/30 p-4"
+                  >
+                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gold-400/30 font-serif text-xs text-gold-300">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm leading-relaxed text-midnight-50/85">{q}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* divider */}
+            <div className="my-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
+              <Sparkles className="h-4 w-4 text-gold-400/50" />
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
+            </div>
+
+            {/* affirmation */}
+            <div className="relative overflow-hidden rounded-2xl border border-gold-400/25 bg-gradient-to-br from-midnight-700/40 to-midnight-900/40 p-5">
+              <SufiOrnament size={90} className="pointer-events-none absolute -right-4 -top-4 opacity-15" />
+              <div className="relative z-10">
+                <h4 className="mb-2 flex items-center gap-2 font-serif text-base font-medium text-gold-200">
+                  <Sparkles className="h-4 w-4 text-gold-400/80" />
+                  靈性肯定句
+                </h4>
+                <p className="font-serif text-base italic leading-loose text-gold-100/90">
+                  「{card.meditation.affirmation}」
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
