@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { Starfield } from './components/Starfield';
 import { HomePage } from './pages/HomePage';
 import { CardListPage } from './pages/CardListPage';
 import { CardDetailPage } from './pages/CardDetailPage';
@@ -18,10 +17,11 @@ export default function App() {
   const goDetail = useCallback((cardId: string, suitId: SuitId) => setView({ name: 'detail', cardId, suitId }), []);
 
   return (
-    <div className="relative min-h-screen">
-      <Starfield count={70} />
-
-      <div key={`${view.name}-${view.name === 'list' ? view.suitId : view.name === 'detail' ? view.cardId : ''}`} className="relative z-10 animate-fade-in">
+    <div className="relative min-h-screen paper-texture">
+      <div
+        key={`${view.name}-${view.name === 'list' ? view.suitId : view.name === 'detail' ? view.cardId : ''}`}
+        className="relative z-10 animate-fade-in"
+      >
         {view.name === 'home' && <HomePage onNavigate={goList} />}
 
         {view.name === 'list' && (
@@ -34,11 +34,7 @@ export default function App() {
         )}
 
         {view.name === 'detail' && (
-          <CardDetailPage
-            key={view.cardId}
-            cardId={view.cardId}
-            onBack={() => goList(view.suitId)}
-          />
+          <CardDetailPage key={view.cardId} cardId={view.cardId} onBack={() => goList(view.suitId)} />
         )}
       </div>
     </div>

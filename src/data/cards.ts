@@ -10,6 +10,9 @@ export interface Suit {
   subtitle: string;
   description: string;
   element: string;
+  elementArabic: string;
+  rootWord: string;
+  rootMeaning: string;
   symbol: string;
   accent: string; // tailwind color base, e.g. 'gold'
   count: number;
@@ -45,6 +48,9 @@ export const SUITS: Suit[] = [
     subtitle: 'Major Arcana',
     description: '靈性之旅的核心二十二張，揭示靈魂從啟蒙到覺醒的完整旅程。',
     element: '宇宙',
+    elementArabic: 'Kāināt',
+    rootWord: '—',
+    rootMeaning: '大阿卡納對應靈性覺醒的完整路徑，不隸屬於單一元素。',
     symbol: '✦',
     accent: 'gold',
     count: 22,
@@ -55,6 +61,9 @@ export const SUITS: Suit[] = [
     subtitle: 'Staffs',
     description: '火元素之牌，象徵熱情、行動力、創造力與意志的燃燒。',
     element: '火',
+    elementArabic: 'Nār',
+    rootWord: 'Jawkan',
+    rootMeaning: 'Jawkan——波斯馬球棍。權杖的原型來自古代波斯的馬球棍，象徵行動與競技的生命力。',
     symbol: '⟡',
     accent: 'emerald',
     count: 14,
@@ -65,6 +74,9 @@ export const SUITS: Suit[] = [
     subtitle: 'Cups',
     description: '水元素之牌，映照情感、直覺、愛與心靈深處的流動。',
     element: '水',
+    elementArabic: 'Māʾ',
+    rootWord: 'Tuman',
+    rootMeaning: 'Tuman——波斯「萬」、眾多之意。聖杯承載的是豐沛的情感與生命的眾多面貌。',
     symbol: '❂',
     accent: 'emerald',
     count: 14,
@@ -75,6 +87,9 @@ export const SUITS: Suit[] = [
     subtitle: 'Swords',
     description: '風元素之牌，代表思維、挑戰、真相與心智的鋒利切割。',
     element: '風',
+    elementArabic: 'Hawāʾ',
+    rootWord: 'Sayuf',
+    rootMeaning: 'Sayuf——阿拉伯文的彎刀（scimitar）。寶劍的原型是弧形的東方彎刀，代表心智的切割與真相的鋒利。',
     symbol: '✧',
     accent: 'gold',
     count: 14,
@@ -85,6 +100,9 @@ export const SUITS: Suit[] = [
     subtitle: 'Coins',
     description: '土元素之牌，關乎物質、豐盛、身體與大地的扎根顯化。',
     element: '土',
+    elementArabic: 'Ard',
+    rootWord: 'Darahim',
+    rootMeaning: 'Darahim——阿拉伯古貨幣（dinars 的複數）。星幣的原型是流通的古代錢幣，象徵物質的顯化與豐盛。',
     symbol: '◈',
     accent: 'emerald',
     count: 14,

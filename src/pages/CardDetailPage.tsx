@@ -32,24 +32,24 @@ const lifeAreas: { id: LifeArea; icon: React.ComponentType<{ className?: string 
 
 const areaStyles: Record<string, { border: string; bg: string; text: string; activeBorder: string; activeBg: string; activeText: string }> = {
   rose: {
-    border: 'border-rose-400/25', bg: 'bg-rose-500/5', text: 'text-rose-300',
-    activeBorder: 'border-rose-400/70', activeBg: 'bg-rose-500/15', activeText: 'text-rose-200',
+    border: 'border-rose-400/30', bg: 'bg-rose-50', text: 'text-rose-600',
+    activeBorder: 'border-rose-500', activeBg: 'bg-rose-100', activeText: 'text-rose-700',
   },
   gold: {
-    border: 'border-gold-400/25', bg: 'bg-gold-500/5', text: 'text-gold-300',
-    activeBorder: 'border-gold-400/70', activeBg: 'bg-gold-500/15', activeText: 'text-gold-200',
+    border: 'border-gold-500/30', bg: 'bg-gold-50', text: 'text-gold-700',
+    activeBorder: 'border-gold-500', activeBg: 'bg-gold-100', activeText: 'text-gold-800',
   },
   emerald: {
-    border: 'border-emerald-400/25', bg: 'bg-emerald-500/5', text: 'text-emerald-300',
-    activeBorder: 'border-emerald-400/70', activeBg: 'bg-emerald-500/15', activeText: 'text-emerald-200',
+    border: 'border-emerald-600/30', bg: 'bg-emerald-50', text: 'text-emerald-700',
+    activeBorder: 'border-emerald-700', activeBg: 'bg-emerald-100', activeText: 'text-emerald-800',
   },
   sky: {
-    border: 'border-sky-400/25', bg: 'bg-sky-500/5', text: 'text-sky-300',
-    activeBorder: 'border-sky-400/70', activeBg: 'bg-sky-500/15', activeText: 'text-sky-200',
+    border: 'border-sky-400/30', bg: 'bg-sky-50', text: 'text-sky-600',
+    activeBorder: 'border-sky-500', activeBg: 'bg-sky-100', activeText: 'text-sky-700',
   },
   violet: {
-    border: 'border-violet-400/25', bg: 'bg-violet-500/5', text: 'text-violet-300',
-    activeBorder: 'border-violet-400/70', activeBg: 'bg-violet-500/15', activeText: 'text-violet-200',
+    border: 'border-violet-400/30', bg: 'bg-violet-50', text: 'text-violet-600',
+    activeBorder: 'border-violet-500', activeBg: 'bg-violet-100', activeText: 'text-violet-700',
   },
 };
 
@@ -64,14 +64,12 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
       <div className="min-h-screen">
         <Header title="牌義資料" onBack={onBack} />
         <div className="mx-auto max-w-5xl px-4 py-20 text-center">
-          <SufiOrnament size={100} className="mx-auto opacity-30" />
-          <p className="mt-6 font-serif text-lg text-gold-100">此牌的資料尚在編寫中</p>
-          <p className="mt-2 text-sm text-midnight-200/60">
-            導師正為這張牌撰寫蘇菲牌義與反思引導，請日後再來。
-          </p>
+          <SufiOrnament size={100} className="mx-auto opacity-20" color="#0A3A2F" />
+          <p className="mt-6 font-serif text-lg text-emerald-900">此牌的資料尚在編寫中</p>
+          <p className="mt-2 text-sm text-emerald-700/60">導師正為這張牌撰寫蘇菲牌義與反思引導，請日後再來。</p>
           <button
             onClick={onBack}
-            className="mt-6 rounded-full border border-gold-400/30 px-5 py-2 text-sm text-gold-200 transition-colors hover:bg-gold-500/10"
+            className="mt-6 rounded-full border border-gold-500/30 bg-cream-50 px-5 py-2 text-sm text-emerald-800 transition-colors hover:bg-cream-200"
           >
             返回列表
           </button>
@@ -83,7 +81,6 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
   const suit = SUITS.find((s) => s.id === card.suitId)!;
   const meaning = orientation === 'upright' ? card.upright : card.reversed;
   const isReversed = orientation === 'reversed';
-
   const guidance = activeArea ? card.guidance[activeArea][orientation] : null;
 
   return (
@@ -95,37 +92,29 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
       />
 
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
-        {/* top: card art + toggle */}
+        {/* card art + toggle */}
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8 animate-fade-in-up">
-          {/* card art with glow */}
           <div className="relative shrink-0">
-            <div className="pointer-events-none absolute inset-0 -m-4 rounded-3xl bg-gold-400/10 blur-2xl animate-pulse-glow" />
+            <div className="pointer-events-none absolute inset-0 -m-3 rounded-2xl bg-gold-500/10 blur-2xl animate-pulse-soft" />
             <div className="relative perspective">
-              <CardArt
-                suitId={card.suitId}
-                name={card.name}
-                number={card.number}
-                size="lg"
-                reversed={isReversed}
-              />
+              <CardArt suitId={card.suitId} name={card.name} number={card.number} size="lg" reversed={isReversed} />
             </div>
           </div>
 
-          {/* toggle + summary */}
           <div className="flex w-full flex-1 flex-col gap-5">
             <div>
-              <h2 className="font-serif text-2xl font-bold text-gold-100 sm:text-3xl">{card.name}</h2>
-              <p className="mt-1 font-serif text-sm text-gold-300/80">{card.sufiName}</p>
+              <h2 className="font-serif text-2xl font-bold text-emerald-900 sm:text-3xl">{card.name}</h2>
+              <p className="mt-1 font-serif text-sm italic text-gold-700/80">{card.sufiName}</p>
             </div>
 
             {/* orientation toggle */}
-            <div className="inline-flex w-fit rounded-full border border-gold-400/20 bg-midnight-800/50 p-1">
+            <div className="inline-flex w-fit rounded-full border border-gold-500/20 bg-cream-50 p-1">
               <button
                 onClick={() => setOrientation('upright')}
                 className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 ${
                   orientation === 'upright'
-                    ? 'bg-gold-gradient text-midnight-900 shadow-lg'
-                    : 'text-midnight-100/60 hover:text-gold-200'
+                    ? 'bg-emerald-800 text-cream-100 shadow-md'
+                    : 'text-emerald-700/60 hover:text-emerald-900'
                 }`}
               >
                 <Compass className="h-4 w-4" />
@@ -135,8 +124,8 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
                 onClick={() => setOrientation('reversed')}
                 className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 ${
                   orientation === 'reversed'
-                    ? 'bg-gold-gradient text-midnight-900 shadow-lg'
-                    : 'text-midnight-100/60 hover:text-gold-200'
+                    ? 'bg-emerald-800 text-cream-100 shadow-md'
+                    : 'text-emerald-700/60 hover:text-emerald-900'
                 }`}
               >
                 <RotateCw className="h-4 w-4" />
@@ -147,76 +136,69 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
             {/* keywords */}
             <div className="flex flex-wrap gap-2">
               {meaning.keywords.map((k) => (
-                <span
-                  key={k}
-                  className="rounded-full border border-gold-400/20 bg-midnight-800/40 px-3 py-1 text-xs text-gold-200/80"
-                >
+                <span key={k} className="rounded-full border border-gold-500/20 bg-cream-50 px-3 py-1 text-xs text-emerald-800/80">
                   {k}
                 </span>
               ))}
             </div>
 
-            <p className="text-sm leading-relaxed text-midnight-100/70">
-              {suit.name} · {suit.element}元素
-              {isReversed ? ' · 逆位能量流轉中' : ' · 正位之光顯現'}
+            <p className="text-sm text-emerald-700/60">
+              {suit.name} · {suit.element}元素 · {suit.elementArabic}
+              {isReversed ? ' · 逆位能量流轉' : ' · 正位之光顯現'}
             </p>
           </div>
         </div>
 
-        {/* book meaning section */}
+        {/* book meaning */}
         <section
           key={orientation}
-          className="mt-8 animate-fade-in-up rounded-3xl border border-gold-400/15 bg-midnight-800/30 p-6 sm:p-8"
+          className="mt-8 animate-fade-in-up rounded-2xl border border-gold-500/15 bg-cream-50 p-6 sm:p-8"
         >
           <div className="mb-5 flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-gold-300" />
-            <h3 className="font-serif text-lg font-semibold text-gold-100">牌義寶典</h3>
-            <span className={`ml-auto rounded-full px-3 py-0.5 text-xs ${isReversed ? 'text-rose-300/80' : 'text-emerald-300/80'}`}>
+            <BookOpen className="h-5 w-5 text-gold-600" />
+            <h3 className="font-serif text-lg font-semibold text-emerald-900">牌義寶典</h3>
+            <span className={`ml-auto rounded-full px-3 py-0.5 text-xs ${isReversed ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}`}>
               {isReversed ? '逆位' : '正位'}
             </span>
           </div>
 
-          {/* core sufi philosophy */}
+          {/* philosophy */}
           <div className="mb-6">
             <div className="mb-2 flex items-center gap-2">
-              <SufiOrnament size={20} className="opacity-70" />
-              <h4 className="font-serif text-base font-medium text-gold-200">核心蘇菲哲學</h4>
+              <SufiOrnament size={18} className="opacity-60" color="#0A3A2F" />
+              <h4 className="font-serif text-base font-medium text-emerald-900">核心蘇菲哲學</h4>
             </div>
-            <p className="border-l-2 border-gold-400/40 pl-4 text-sm leading-loose text-midnight-50/85">
+            <p className="border-l-2 border-gold-500/40 pl-4 text-sm leading-loose text-emerald-800/85">
               {meaning.philosophy}
             </p>
           </div>
 
-          {/* divider */}
           <div className="my-5 flex items-center gap-3">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
-            <Sparkles className="h-4 w-4 text-gold-400/50" />
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
+            <div className="h-px flex-1 gold-rule opacity-30" />
+            <Sparkles className="h-4 w-4 text-gold-500/60" />
+            <div className="h-px flex-1 gold-rule opacity-30" />
           </div>
 
-          {/* book definition */}
+          {/* definition */}
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <BookOpen className="h-4 w-4 text-gold-300/80" />
-              <h4 className="font-serif text-base font-medium text-gold-200">書本定義</h4>
+              <BookOpen className="h-4 w-4 text-gold-600/80" />
+              <h4 className="font-serif text-base font-medium text-emerald-900">書本定義</h4>
             </div>
-            <p className="text-sm leading-loose text-midnight-50/80">
-              {meaning.definition}
-            </p>
+            <p className="text-sm leading-loose text-emerald-800/80">{meaning.definition}</p>
           </div>
         </section>
 
-        {/* interactive guided questions */}
+        {/* guided mentorship */}
         <section className="mt-8">
-          <div className="mb-5 flex items-center gap-2">
-            <Compass className="h-5 w-5 text-gold-300" />
-            <h3 className="font-serif text-lg font-semibold text-gold-100">一對一導師引導</h3>
+          <div className="mb-4 flex items-center gap-2">
+            <Compass className="h-5 w-5 text-gold-600" />
+            <h3 className="font-serif text-lg font-semibold text-emerald-900">一對一導師引導</h3>
           </div>
-          <p className="mb-5 text-sm text-midnight-100/60">
+          <p className="mb-5 text-sm text-emerald-700/60">
             選擇一個生命領域，導師將根據〈{card.name}〉的{isReversed ? '逆位' : '正位'}能量，為你展開一段深度反思。
           </p>
 
-          {/* category buttons */}
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
             {lifeAreas.map((area) => {
               const s = areaStyles[area.color];
@@ -228,8 +210,8 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
                   onClick={() => setActiveArea(area.id)}
                   className={`group flex flex-col items-center gap-2 rounded-2xl border p-4 transition-all duration-300 animate-fade-in-scale ${
                     isActive
-                      ? `${s.activeBorder} ${s.activeBg} ${s.activeText} -translate-y-1 shadow-lg`
-                      : `${s.border} ${s.bg} ${s.text} hover:-translate-y-0.5 hover:border-gold-400/40`
+                      ? `${s.activeBorder} ${s.activeBg} ${s.activeText} -translate-y-1 shadow-md`
+                      : `${s.border} ${s.bg} ${s.text} hover:-translate-y-0.5 hover:border-gold-500/40`
                   }`}
                 >
                   <Icon className={`h-6 w-6 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`} />
@@ -239,21 +221,19 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
             })}
           </div>
 
-          {/* guidance panel */}
           {guidance && activeArea && (
             <div
               key={`${activeArea}-${orientation}`}
-              className="mt-6 animate-slide-in-right overflow-hidden rounded-3xl border border-gold-400/20 bg-gradient-to-br from-midnight-700/50 via-midnight-800/50 to-midnight-900/50 p-6 sm:p-8"
+              className="mt-6 animate-slide-in-right overflow-hidden rounded-2xl border border-gold-500/20 bg-gradient-to-br from-cream-50 to-cream-200 p-6 sm:p-8"
             >
-              <div className="pointer-events-none absolute -right-10 -top-10 opacity-10">
-                <SufiOrnament size={180} />
-              </div>
+              <SufiOrnament size={160} className="pointer-events-none absolute -right-8 -top-8 opacity-[0.06]" color="#0A3A2F" />
 
               <div className="relative z-10 flex flex-col gap-4">
                 <div className="flex items-center gap-3">
                   {(() => {
-                    const Icon = lifeAreas.find((a) => a.id === activeArea)!.icon;
-                    const s = areaStyles[lifeAreas.find((a) => a.id === activeArea)!.color];
+                    const areaInfo = lifeAreas.find((a) => a.id === activeArea)!;
+                    const s = areaStyles[areaInfo.color];
+                    const Icon = areaInfo.icon;
                     return (
                       <div className={`flex h-10 w-10 items-center justify-center rounded-xl border ${s.activeBorder} ${s.activeBg} ${s.activeText}`}>
                         <Icon className="h-5 w-5" />
@@ -261,25 +241,21 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
                     );
                   })()}
                   <div>
-                    <p className="text-xs uppercase tracking-widest text-gold-300/60">導師引導</p>
-                    <h4 className="font-serif text-lg font-semibold text-gold-100">
-                      〈{card.name}〉· {activeArea}
-                    </h4>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-gold-700/50">導師引導</p>
+                    <h4 className="font-serif text-lg font-semibold text-emerald-900">〈{card.name}〉· {activeArea}</h4>
                   </div>
-                  <span className={`ml-auto rounded-full px-3 py-1 text-xs ${isReversed ? 'text-rose-300/80' : 'text-emerald-300/80'}`}>
+                  <span className={`ml-auto rounded-full px-3 py-1 text-xs ${isReversed ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'}`}>
                     {isReversed ? '逆位' : '正位'}
                   </span>
                 </div>
 
-                <div className="my-1 h-px bg-gradient-to-r from-transparent via-gold-400/25 to-transparent" />
+                <div className="my-1 h-px gold-rule opacity-25" />
 
-                <p className="font-serif text-[15px] leading-loose text-midnight-50/90">
-                  {guidance}
-                </p>
+                <p className="font-serif text-[15px] leading-loose text-emerald-900/85">{guidance}</p>
 
-                <div className="mt-2 flex items-center gap-2 rounded-2xl border border-gold-400/15 bg-midnight-900/40 p-4">
-                  <Sparkles className="h-4 w-4 shrink-0 text-gold-400/70" />
-                  <p className="text-xs leading-relaxed text-midnight-100/60">
+                <div className="mt-2 flex items-center gap-2 rounded-xl border border-gold-500/15 bg-emerald-50 p-4">
+                  <Sparkles className="h-4 w-4 shrink-0 text-gold-600/80" />
+                  <p className="text-xs leading-relaxed text-emerald-700/60">
                     靜下心，將這段引導讀三遍。第一遍以眼讀，第二遍以心讀，第三遍讓它在你的呼吸中沉降——答案會在你沉默時浮現。
                   </p>
                 </div>
@@ -288,58 +264,53 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
           )}
 
           {!activeArea && (
-            <div className="mt-6 flex flex-col items-center gap-3 rounded-3xl border border-dashed border-gold-400/15 bg-midnight-800/20 p-10 text-center">
-              <SufiOrnament size={60} className="opacity-30" />
-              <p className="text-sm text-midnight-200/50">
-                選擇上方一個生命領域，開始你的反思之旅
-              </p>
+            <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-gold-500/20 bg-cream-50 p-10 text-center">
+              <SufiOrnament size={60} className="opacity-20" color="#0A3A2F" />
+              <p className="text-sm text-emerald-700/50">選擇上方一個生命領域，開始你的反思之旅</p>
             </div>
           )}
         </section>
 
-        {/* daily meditation & affirmation */}
+        {/* daily meditation */}
         {card.meditation && (
-          <section className="mt-8 animate-fade-in-up rounded-3xl border border-gold-400/15 bg-midnight-800/30 p-6 sm:p-8">
+          <section className="mt-8 animate-fade-in-up rounded-2xl border border-gold-500/15 bg-cream-50 p-6 sm:p-8">
             <div className="mb-5 flex items-center gap-2">
-              <Sun className="h-5 w-5 text-gold-300" />
-              <h3 className="font-serif text-lg font-semibold text-gold-100">每日冥想與肯定句</h3>
+              <Sun className="h-5 w-5 text-gold-600" />
+              <h3 className="font-serif text-lg font-semibold text-emerald-900">每日冥想與肯定句</h3>
             </div>
 
-            {/* contemplations */}
             <div className="mb-6">
-              <h4 className="mb-3 font-serif text-base font-medium text-gold-200">心靈反思問題</h4>
+              <h4 className="mb-3 font-serif text-base font-medium text-emerald-900">心靈反思問題</h4>
               <ul className="flex flex-col gap-3">
                 {card.meditation.contemplations.map((q, i) => (
                   <li
                     key={i}
-                    style={{ animationDelay: `${i * 100}ms` }}
-                    className="flex items-start gap-3 animate-fade-in-up rounded-2xl border border-gold-400/10 bg-midnight-900/30 p-4"
+                    style={{ animationDelay: `${i * 80}ms` }}
+                    className="flex items-start gap-3 animate-fade-in-up rounded-xl border border-gold-500/10 bg-cream-100 p-4"
                   >
-                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gold-400/30 font-serif text-xs text-gold-300">
+                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gold-500/30 font-serif text-xs text-gold-700">
                       {i + 1}
                     </span>
-                    <span className="text-sm leading-relaxed text-midnight-50/85">{q}</span>
+                    <span className="text-sm leading-relaxed text-emerald-800/85">{q}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* divider */}
             <div className="my-5 flex items-center gap-3">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
-              <Sparkles className="h-4 w-4 text-gold-400/50" />
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
+              <div className="h-px flex-1 gold-rule opacity-30" />
+              <Sparkles className="h-4 w-4 text-gold-500/60" />
+              <div className="h-px flex-1 gold-rule opacity-30" />
             </div>
 
-            {/* affirmation */}
-            <div className="relative overflow-hidden rounded-2xl border border-gold-400/25 bg-gradient-to-br from-midnight-700/40 to-midnight-900/40 p-5">
-              <SufiOrnament size={90} className="pointer-events-none absolute -right-4 -top-4 opacity-15" />
+            <div className="relative overflow-hidden rounded-xl border border-gold-500/25 bg-gradient-to-br from-emerald-800 to-emerald-900 p-5">
+              <SufiOrnament size={80} className="pointer-events-none absolute -right-3 -top-3 opacity-15" />
               <div className="relative z-10">
-                <h4 className="mb-2 flex items-center gap-2 font-serif text-base font-medium text-gold-200">
+                <h4 className="mb-2 flex items-center gap-2 font-serif text-base font-medium text-gold-300">
                   <Sparkles className="h-4 w-4 text-gold-400/80" />
                   靈性肯定句
                 </h4>
-                <p className="font-serif text-base italic leading-loose text-gold-100/90">
+                <p className="font-serif text-base italic leading-loose text-cream-100/90">
                   「{card.meditation.affirmation}」
                 </p>
               </div>

@@ -9,47 +9,47 @@ interface CardArtProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const accentMap: Record<SuitId, { ring: string; glow: string; text: string }> = {
-  major: { ring: 'border-gold-400/50', glow: 'shadow-[0_0_30px_rgba(252,211,77,0.25)]', text: 'text-gold-300' },
-  staffs: { ring: 'border-gold-400/40', glow: 'shadow-[0_0_25px_rgba(245,158,11,0.2)]', text: 'text-gold-300' },
-  cups: { ring: 'border-emerald-400/40', glow: 'shadow-[0_0_25px_rgba(16,185,129,0.2)]', text: 'text-emerald-300' },
-  swords: { ring: 'border-gold-300/40', glow: 'shadow-[0_0_25px_rgba(252,211,77,0.18)]', text: 'text-gold-200' },
-  coins: { ring: 'border-emerald-400/40', glow: 'shadow-[0_0_25px_rgba(5,150,105,0.2)]', text: 'text-emerald-300' },
-};
-
 const sizeMap = {
-  sm: { w: 'w-32', h: 'h-48', ornament: 70, title: 'text-xs', num: 'text-[10px]' },
-  md: { w: 'w-44', h: 'h-64', ornament: 95, title: 'text-sm', num: 'text-xs' },
-  lg: { w: 'w-56', h: 'h-80', ornament: 130, title: 'text-base', num: 'text-sm' },
+  sm: { w: 'w-28', h: 'h-44', ornament: 60, title: 'text-[11px]', num: 'text-[9px]', padding: 'p-2' },
+  md: { w: 'w-40', h: 'h-60', ornament: 85, title: 'text-sm', num: 'text-xs', padding: 'p-3' },
+  lg: { w: 'w-52', h: 'h-76', ornament: 120, title: 'text-base', num: 'text-sm', padding: 'p-4' },
 };
 
 export function CardArt({ suitId, name, number, reversed = false, size = 'md' }: CardArtProps) {
-  const a = accentMap[suitId];
   const s = sizeMap[size];
+  const isMajor = suitId === 'major';
 
   return (
     <div
-      className={`relative ${s.w} ${s.h} shrink-0 rounded-2xl bg-gradient-to-br from-midnight-700 via-midnight-800 to-midnight-950 border-2 ${a.ring} ${a.glow} overflow-hidden transition-all duration-500 ${reversed ? 'rotate-180' : ''}`}
+      className={`relative ${s.w} ${s.h} shrink-0 rounded-xl overflow-hidden transition-all duration-500 ${reversed ? 'rotate-180' : ''} ${
+        isMajor
+          ? 'bg-gradient-to-br from-emerald-700 via-emerald-800 to-emerald-900 border-2 border-gold-500/60 shadow-[0_8px_30px_rgba(10,58,47,0.25)]'
+          : 'bg-gradient-to-br from-cream-100 via-cream-200 to-cream-300 border-2 border-gold-500/50 shadow-[0_8px_24px_rgba(10,58,47,0.15)]'
+      }`}
     >
       {/* corner flourishes */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-2 left-2 w-6 h-6 border-t border-l border-gold-400/40 rounded-tl-lg" />
-        <div className="absolute top-2 right-2 w-6 h-6 border-t border-r border-gold-400/40 rounded-tr-lg" />
-        <div className="absolute bottom-2 left-2 w-6 h-6 border-b border-l border-gold-400/40 rounded-bl-lg" />
-        <div className="absolute bottom-2 right-2 w-6 h-6 border-b border-r border-gold-400/40 rounded-br-lg" />
+      <div className="pointer-events-none absolute inset-0 z-10">
+        <div className={`absolute top-1.5 left-1.5 w-5 h-5 border-t border-l rounded-tl-md ${isMajor ? 'border-gold-400/50' : 'border-gold-500/50'}`} />
+        <div className={`absolute top-1.5 right-1.5 w-5 h-5 border-t border-r rounded-tr-md ${isMajor ? 'border-gold-400/50' : 'border-gold-500/50'}`} />
+        <div className={`absolute bottom-1.5 left-1.5 w-5 h-5 border-b border-l rounded-bl-md ${isMajor ? 'border-gold-400/50' : 'border-gold-500/50'}`} />
+        <div className={`absolute bottom-1.5 right-1.5 w-5 h-5 border-b border-r rounded-br-md ${isMajor ? 'border-gold-400/50' : 'border-gold-500/50'}`} />
       </div>
 
-      {/* sufi pattern bg */}
-      <div className="sufi-pattern absolute inset-0 opacity-60" />
+      {/* watermark pattern */}
+      <div className="sufi-watermark absolute inset-0" />
 
       {/* center ornament */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-3">
-        <div className={`${s.num} font-serif tracking-widest text-gold-400/70 uppercase`}>{number}</div>
-        <SufiOrnament size={s.ornament} className="animate-rotate-slow opacity-80" />
-        <div className={`font-serif ${s.title} ${a.text} text-center leading-tight px-2`}>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 p-2">
+        <div className={`${s.num} font-serif tracking-[0.2em] uppercase ${isMajor ? 'text-gold-300/80' : 'text-emerald-700/60'}`}>{number}</div>
+        <SufiOrnament
+          size={s.ornament}
+          className="animate-rotate-slow opacity-70"
+          color={isMajor ? '#D4AF37' : '#0A3A2F'}
+        />
+        <div className={`font-serif ${s.title} text-center leading-tight ${isMajor ? 'text-cream-100' : 'text-emerald-800'} px-1`}>
           {name}
         </div>
-        <div className="h-px w-12 bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
+        <div className="h-px w-10 gold-rule opacity-50" />
       </div>
     </div>
   );
