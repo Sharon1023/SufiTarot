@@ -167,6 +167,7 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
               <CardArt
                 suitId={card.suitId}
                 name={card.name}
+                englishName={card.englishName}
                 number={card.number}
                 visualId={card.visualId}
                 size="lg"
@@ -222,6 +223,18 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
         {/* ───── 2. 牌面解析 ───── */}
         <section className="mt-12 animate-fade-in-up rounded-2xl border border-gold-500/15 glass-panel p-6 sm:p-8">
           <SectionHeading icon={Feather} title="牌面解析" subtitle="Card Interpretation" />
+
+          <div className="mb-6 flex justify-center">
+            <CardArt
+              suitId={card.suitId}
+              name={card.name}
+              englishName={card.englishName}
+              number={card.number}
+              visualId={card.visualId}
+              size="md"
+              reversed={isReversed}
+            />
+          </div>
 
           <p className="text-sm leading-loose text-sage-100/85">
             {meaning.philosophy}

@@ -33,6 +33,7 @@ export interface CardData {
   id: string;
   number: string;
   name: string;
+  englishName?: string;
   sufiName: string;
   suitId: SuitId;
   visualId?: string;
@@ -115,6 +116,7 @@ export const CARDS: CardData[] = [
     id: 'the-fool',
     number: '0',
     name: '愚人',
+    englishName: 'The Fool',
     sufiName: 'Salik（行者）',
     suitId: 'major',
     visualId: 'fool',
@@ -183,6 +185,7 @@ export const CARDS: CardData[] = [
     id: 'the-alchemist',
     number: '1',
     name: '魔術師',
+    englishName: 'The Magician',
     sufiName: 'Alchemist（煉金術士）',
     suitId: 'major',
     visualId: 'alchemist',
@@ -251,6 +254,7 @@ export const CARDS: CardData[] = [
     id: 'the-murshida',
     number: '2',
     name: '女祭司',
+    englishName: 'The High Priestess',
     sufiName: 'Murshida（女導師）',
     suitId: 'major',
     visualId: 'murshida',
@@ -319,6 +323,7 @@ export const CARDS: CardData[] = [
     id: 'the-shahbanu',
     number: '3',
     name: '皇后',
+    englishName: 'The Empress',
     sufiName: 'Shahbanu（崇高之后）',
     suitId: 'major',
     visualId: 'shahbanu',

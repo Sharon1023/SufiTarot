@@ -6,6 +6,7 @@ import type { SuitId } from '../data/cards';
 interface CardArtProps {
   suitId: SuitId;
   name: string;
+  englishName?: string;
   number: string;
   visualId?: string;
   reversed?: boolean;
@@ -62,6 +63,7 @@ function MiniStar({ className = '', color = '#D4AF37' }: { className?: string; c
 export function CardArt({
   suitId,
   name,
+  englishName,
   number,
   visualId,
   reversed = false,
@@ -70,6 +72,7 @@ export function CardArt({
   const s = sizeMap[size];
   const isMajor = suitId === 'major';
   const showVisual = hasVisual(visualId);
+  const displayName = englishName || name;
 
   const cardFront = showVisual ? (
     <div className={`relative ${s.w} ${s.h} shrink-0 overflow-hidden rounded-xl ${s.borderWidth} border-gold-500/50 shadow-[0_8px_30px_rgba(212,175,55,0.10)]`}>
@@ -93,7 +96,7 @@ export function CardArt({
       <div className="absolute left-1/2 bottom-0 z-20 -translate-x-1/2">
         <div className={`flex items-center gap-2 ${s.banner} bg-gradient-to-t from-midnight-200/95 to-midnight-300/90 px-4 border-x border-gold-500/30`}>
           <div className="h-px w-3 gold-rule opacity-50" />
-          <span className={`font-serif ${s.title} text-center leading-none text-cream-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] whitespace-nowrap`}>{name}</span>
+          <span className={`font-serif ${s.title} text-center leading-none text-cream-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] whitespace-nowrap`}>{displayName}</span>
           <div className="h-px w-3 gold-rule opacity-50" />
         </div>
       </div>
@@ -135,7 +138,7 @@ export function CardArt({
       <div className="absolute left-1/2 bottom-0 z-20 -translate-x-1/2">
         <div className={`flex items-center gap-2 ${s.banner} bg-gradient-to-t from-midnight-200/95 to-midnight-300/90 px-4 border-x border-gold-500/30`}>
           <div className="h-px w-3 gold-rule opacity-50" />
-          <span className={`font-serif ${s.title} text-center leading-none text-cream-100 whitespace-nowrap`}>{name}</span>
+          <span className={`font-serif ${s.title} text-center leading-none text-cream-100 whitespace-nowrap`}>{displayName}</span>
           <div className="h-px w-3 gold-rule opacity-50" />
         </div>
       </div>

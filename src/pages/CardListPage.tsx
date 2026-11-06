@@ -94,6 +94,7 @@ export function CardListPage({ suitId, onSelect, onBack }: CardListPageProps) {
                   <CardArt
                     suitId={suitId}
                     name={c.name}
+                    englishName={c.englishName}
                     number={c.number}
                     visualId={c.visualId}
                     size="md"
