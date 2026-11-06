@@ -150,91 +150,84 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
 
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
         {/* ───── 1. Hero: Card ───── */}
-        <div className="flex flex-col items-center gap-5 animate-fade-in-up">
-          <div className="pointer-events-none absolute left-1/2 top-20 -translate-x-1/2 h-64 w-64 rounded-full bg-gold-500/8 blur-3xl" />
+        <div className="relative animate-fade-in-up">
+          <div className="pointer-events-none absolute left-1/2 top-10 -translate-x-1/2 h-64 w-64 rounded-full bg-gold-500/8 blur-3xl" />
 
           {/* card number badge */}
-          <div className="relative z-10 flex items-center gap-2 rounded-full border border-gold-500/20 bg-velvet-200/40 px-4 py-1.5 text-[11px] tracking-[0.25em] text-gold-400/60">
+          <div className="relative z-10 mx-auto mb-5 flex w-fit items-center gap-2 rounded-full border border-gold-500/20 bg-velvet-200/40 px-4 py-1.5 text-[11px] tracking-[0.25em] text-gold-400/60">
             <span className="font-serif">{card.number}</span>
             <span className="h-3 w-px bg-gold-500/20" />
             <span className="uppercase">{suit.subtitle}</span>
           </div>
 
-          {/* card art */}
-          <div className="relative shrink-0">
-            <div className="pointer-events-none absolute inset-0 -m-4 rounded-2xl bg-gold-500/8 blur-2xl animate-pulse-soft" />
-            <div className="relative perspective">
-              <CardArt
-                suitId={card.suitId}
-                name={card.name}
-                englishName={card.englishName}
-                number={card.number}
-                visualId={card.visualId}
-                size="lg"
-                reversed={isReversed}
-              />
+          <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center">
+            {/* left: name + tags + toggle */}
+            <div className="flex flex-1 flex-col items-center gap-4 text-center sm:items-start sm:text-left">
+              {/* name */}
+              <div className="flex flex-col gap-1">
+                <h2 className="font-serif text-3xl font-bold text-cream-100 text-illuminated sm:text-4xl">
+                  {card.name}
+                </h2>
+                <p className="font-serif text-sm italic text-gold-400/70">{card.sufiName}</p>
+              </div>
+
+              {/* tags */}
+              <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+                {meaning.keywords.map((k) => (
+                  <span key={k} className="rounded-full border border-gold-500/15 bg-velvet-200/30 px-3 py-1 text-xs text-sage-100/80">
+                    {k}
+                  </span>
+                ))}
+              </div>
+
+              {/* orientation toggle */}
+              <div className="inline-flex rounded-full border border-gold-500/20 bg-velvet-200/40 p-1">
+                <button
+                  onClick={() => setOrientation('upright')}
+                  className={`flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 ${
+                    orientation === 'upright'
+                      ? 'bg-midnight-200/80 text-gold-300 shadow-md'
+                      : 'text-sage-300/60 hover:text-cream-100'
+                  }`}
+                >
+                  <Compass className="h-4 w-4" />
+                  正位
+                </button>
+                <button
+                  onClick={() => setOrientation('reversed')}
+                  className={`flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 ${
+                    orientation === 'reversed'
+                      ? 'bg-midnight-200/80 text-gold-300 shadow-md'
+                      : 'text-sage-300/60 hover:text-cream-100'
+                  }`}
+                >
+                  <RotateCw className="h-4 w-4" />
+                  逆位
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* name */}
-          <div className="flex flex-col items-center gap-1 text-center">
-            <h2 className="font-serif text-3xl font-bold text-cream-100 text-illuminated sm:text-4xl">
-              {card.name}
-            </h2>
-            <p className="font-serif text-sm italic text-gold-400/70">{card.sufiName}</p>
-          </div>
-
-          {/* tags */}
-          <div className="flex flex-wrap justify-center gap-2 max-w-md">
-            {meaning.keywords.map((k) => (
-              <span key={k} className="rounded-full border border-gold-500/15 bg-velvet-200/30 px-3 py-1 text-xs text-sage-100/80">
-                {k}
-              </span>
-            ))}
-          </div>
-
-          {/* orientation toggle — right under tags */}
-          <div className="inline-flex rounded-full border border-gold-500/20 bg-velvet-200/40 p-1">
-            <button
-              onClick={() => setOrientation('upright')}
-              className={`flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 ${
-                orientation === 'upright'
-                  ? 'bg-midnight-200/80 text-gold-300 shadow-md'
-                  : 'text-sage-300/60 hover:text-cream-100'
-              }`}
-            >
-              <Compass className="h-4 w-4" />
-              正位
-            </button>
-            <button
-              onClick={() => setOrientation('reversed')}
-              className={`flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 ${
-                orientation === 'reversed'
-                  ? 'bg-midnight-200/80 text-gold-300 shadow-md'
-                  : 'text-sage-300/60 hover:text-cream-100'
-              }`}
-            >
-              <RotateCw className="h-4 w-4" />
-              逆位
-            </button>
+            {/* right: card art */}
+            <div className="relative shrink-0">
+              <div className="pointer-events-none absolute inset-0 -m-4 rounded-2xl bg-gold-500/8 blur-2xl animate-pulse-soft" />
+              <div className="relative perspective">
+                <CardArt
+                  suitId={card.suitId}
+                  name={card.name}
+                  englishName={card.englishName}
+                  number={card.number}
+                  visualId={card.visualId}
+                  size="md"
+                  reversed={isReversed}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
         {/* ───── 2. 牌面解析 ───── */}
         <section className="mt-12 animate-fade-in-up rounded-2xl border border-gold-500/15 glass-panel p-6 sm:p-8">
           <SectionHeading icon={Feather} title="牌面解析" subtitle="Card Interpretation" />
-
-          <div className="mb-6 flex justify-center">
-            <CardArt
-              suitId={card.suitId}
-              name={card.name}
-              englishName={card.englishName}
-              number={card.number}
-              visualId={card.visualId}
-              size="md"
-              reversed={isReversed}
-            />
-          </div>
 
           <p className="text-sm leading-loose text-sage-100/85">
             {meaning.philosophy}
