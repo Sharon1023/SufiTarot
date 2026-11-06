@@ -149,10 +149,9 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
       />
 
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
-        {/* ───── 1. Hero: name + tags + toggle (left) & card face (right) ───── */}
-        <div className="relative animate-fade-in-up overflow-hidden rounded-2xl border border-gold-500/15 glass-panel p-6 sm:p-8">
+        {/* ───── Hero + 牌面解析: one flowing layout ───── */}
+        <div className="relative animate-fade-in-up">
           <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 h-64 w-64 rounded-full bg-gold-500/8 blur-3xl" />
-          <SufiOrnament size={120} className="pointer-events-none absolute -right-6 -top-6 opacity-[0.08]" color="#D4AF37" />
 
           {/* card number badge */}
           <div className="relative z-10 mb-6 flex w-fit items-center gap-2 rounded-full border border-gold-500/20 bg-velvet-200/40 px-4 py-1.5 text-[11px] tracking-[0.25em] text-gold-400/60">
@@ -161,9 +160,9 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
             <span className="uppercase">{suit.subtitle}</span>
           </div>
 
-          <div className="relative z-10 flex flex-col items-center gap-8 sm:flex-row sm:items-center sm:justify-center sm:gap-10">
-            {/* left: name + tags + toggle */}
-            <div className="flex flex-1 flex-col items-center gap-5 text-center sm:items-start sm:text-left">
+          <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:gap-12">
+            {/* left column: name → tags → toggle → 牌面解析 text */}
+            <div className="flex flex-1 flex-col items-center gap-5 text-center lg:items-start lg:text-left">
               {/* name */}
               <div className="flex flex-col gap-1.5">
                 <h2 className="font-serif text-3xl font-bold text-cream-100 text-illuminated sm:text-4xl">
@@ -173,7 +172,7 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
               </div>
 
               {/* tags */}
-              <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+              <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
                 {meaning.keywords.map((k) => (
                   <span key={k} className="rounded-full border border-gold-500/15 bg-velvet-200/30 px-3 py-1 text-xs text-sage-100/80">
                     {k}
@@ -206,10 +205,32 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
                   逆位
                 </button>
               </div>
+
+              {/* 牌面解析 — flows right below the toggle, same column */}
+              <div className="mt-2 w-full">
+                <SectionHeading icon={Feather} title="牌面解析" subtitle="Card Interpretation" />
+
+                <p className="text-sm leading-loose text-sage-100/85">
+                  {meaning.philosophy}
+                </p>
+
+                <GoldDivider />
+
+                <p className="text-sm leading-loose text-sage-100/80">
+                  {meaning.definition}
+                </p>
+
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-sage-300/50">
+                  <span>{suit.name} · {suit.element}元素 · {suit.elementArabic}</span>
+                  <span className={`rounded-full px-2.5 py-0.5 ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
+                    {isReversed ? '逆位能量流轉' : '正位之光顯現'}
+                  </span>
+                </div>
+              </div>
             </div>
 
-            {/* right: card art */}
-            <div className="relative shrink-0">
+            {/* right column: card face — stays visible alongside the text */}
+            <div className="relative shrink-0 self-center lg:sticky lg:top-6 lg:self-start">
               <div className="pointer-events-none absolute inset-0 -m-4 rounded-2xl bg-gold-500/8 blur-2xl animate-pulse-soft" />
               <div className="relative perspective">
                 <CardArt
@@ -226,30 +247,11 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
           </div>
         </div>
 
-        {/* ───── 2. 牌面解析 ───── */}
-        <section className="mt-12 animate-fade-in-up rounded-2xl border border-gold-500/15 glass-panel p-6 sm:p-8">
-          <SectionHeading icon={Feather} title="牌面解析" subtitle="Card Interpretation" />
-
-          <p className="text-sm leading-loose text-sage-100/85">
-            {meaning.philosophy}
-          </p>
-
-          <GoldDivider />
-
-          <p className="text-sm leading-loose text-sage-100/80">
-            {meaning.definition}
-          </p>
-
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-sage-300/50">
-            <span>{suit.name} · {suit.element}元素 · {suit.elementArabic}</span>
-            <span className={`rounded-full px-2.5 py-0.5 ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
-              {isReversed ? '逆位能量流轉' : '正位之光顯現'}
-            </span>
-          </div>
-        </section>
-
         {/* ───── 3. Life Area Selector ───── */}
-        <section className="mt-8">
+        <section className="mt-14">
+          <div className="mb-6">
+            <GoldDivider />
+          </div>
           <SectionHeading icon={Compass} title="生活領域論述" subtitle="Life Areas · 選擇領域以展開論述" />
 
           {/* selector buttons */}
