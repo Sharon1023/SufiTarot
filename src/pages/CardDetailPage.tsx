@@ -148,23 +148,24 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
         onBack={onBack}
       />
 
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
-        {/* ───── 1. Hero: Card ───── */}
-        <div className="relative animate-fade-in-up">
-          <div className="pointer-events-none absolute left-1/2 top-10 -translate-x-1/2 h-64 w-64 rounded-full bg-gold-500/8 blur-3xl" />
+      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
+        {/* ───── 1. Hero: name + tags + toggle (left) & card face (right) ───── */}
+        <div className="relative animate-fade-in-up overflow-hidden rounded-2xl border border-gold-500/15 glass-panel p-6 sm:p-8">
+          <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 h-64 w-64 rounded-full bg-gold-500/8 blur-3xl" />
+          <SufiOrnament size={120} className="pointer-events-none absolute -right-6 -top-6 opacity-[0.08]" color="#D4AF37" />
 
           {/* card number badge */}
-          <div className="relative z-10 mx-auto mb-5 flex w-fit items-center gap-2 rounded-full border border-gold-500/20 bg-velvet-200/40 px-4 py-1.5 text-[11px] tracking-[0.25em] text-gold-400/60">
+          <div className="relative z-10 mb-6 flex w-fit items-center gap-2 rounded-full border border-gold-500/20 bg-velvet-200/40 px-4 py-1.5 text-[11px] tracking-[0.25em] text-gold-400/60">
             <span className="font-serif">{card.number}</span>
             <span className="h-3 w-px bg-gold-500/20" />
             <span className="uppercase">{suit.subtitle}</span>
           </div>
 
-          <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center">
+          <div className="relative z-10 flex flex-col items-center gap-8 sm:flex-row sm:items-center sm:justify-center sm:gap-10">
             {/* left: name + tags + toggle */}
-            <div className="flex flex-1 flex-col items-center gap-4 text-center sm:items-start sm:text-left">
+            <div className="flex flex-1 flex-col items-center gap-5 text-center sm:items-start sm:text-left">
               {/* name */}
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1.5">
                 <h2 className="font-serif text-3xl font-bold text-cream-100 text-illuminated sm:text-4xl">
                   {card.name}
                 </h2>
@@ -217,7 +218,7 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
                   englishName={card.englishName}
                   number={card.number}
                   visualId={card.visualId}
-                  size="md"
+                  size="lg"
                   reversed={isReversed}
                 />
               </div>
