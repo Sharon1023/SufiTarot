@@ -10,13 +10,27 @@ interface CardListPageProps {
   onBack: () => void;
 }
 
-function buildCardList(suitId: SuitId, count: number): { id: string; name: string; number: string; isMock: boolean }[] {
+function buildCardList(suitId: SuitId, count: number): CardData[] {
   const real = CARDS.filter((c) => c.suitId === suitId);
-  const items = real.map((c: CardData) => ({ id: c.id, name: c.name, number: c.number, isMock: true }));
-  const filled = items.length;
-  for (let i = filled; i < count; i++) {
+  const items = [...real];
+  for (let i = real.length; i < count; i++) {
     const num = suitId === 'major' ? String(i + 1) : `${i + 1}`;
-    items.push({ id: `placeholder-${suitId}-${i}`, name: `第 ${num} 張`, number: num, isMock: false });
+    items.push({
+      id: `placeholder-${suitId}-${i}`,
+      number: num,
+      name: `第 ${num} 張`,
+      sufiName: '',
+      suitId,
+      upright: { philosophy: '', definition: '', keywords: [] },
+      reversed: { philosophy: '', definition: '', keywords: [] },
+      guidance: {
+        感情: { upright: '', reversed: '' },
+        事業: { upright: '', reversed: '' },
+        財務: { upright: '', reversed: '' },
+        親情: { upright: '', reversed: '' },
+        健康: { upright: '', reversed: '' },
+      },
+    });
   }
   return items;
 }
@@ -55,37 +69,58 @@ export function CardListPage({ suitId, onSelect, onBack }: CardListPageProps) {
                   {suit.rootMeaning}
                 </p>
               )}
+              {suitId === 'major' && (
+                <p className="mt-3 text-xs text-gold-500/50">將滑鼠移至卡片上以翻看牌背</p>
+              )}
             </div>
           </div>
         </div>
 
         {/* card grid */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {cards.map((c, i) => (
-            <button
-              key={c.id}
-              onClick={() => c.isMock && onSelect(c.id)}
-              style={{ animationDelay: `${i * 40}ms` }}
-              className={`group flex flex-col items-center gap-2 animate-fade-in-up ${
-                c.isMock ? 'cursor-pointer' : 'cursor-default opacity-40'
-              }`}
-            >
-              <div className="relative transition-all duration-500 group-hover:-translate-y-1.5 group-hover:scale-[1.03]">
-                <CardArt suitId={suitId} name={c.name} number={c.number} size="md" />
-                {c.isMock && (
-                  <div className="absolute inset-0 flex items-end justify-center pb-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <span className="rounded-full border border-gold-500/30 bg-midnight-200/80 px-3 py-1 text-xs text-gold-300">
-                      查看牌義
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div className="text-center">
-                <p className="font-serif text-sm text-cream-100">{c.name}</p>
-                {!c.isMock && <p className="text-[10px] text-sage-400/40">資料待補</p>}
-              </div>
-            </button>
-          ))}
+          {cards.map((c, i) => {
+            const isMock = !c.visualId && !CARDS.some((rc) => rc.id === c.id);
+            const hasVisual = !!c.visualId;
+            return (
+              <button
+                key={c.id}
+                onClick={() => !isMock && onSelect(c.id)}
+                style={{ animationDelay: `${i * 40}ms` }}
+                className={`group flex flex-col items-center gap-2 animate-fade-in-up ${
+                  isMock ? 'cursor-default opacity-40' : 'cursor-pointer'
+                }`}
+              >
+                <div className="relative transition-all duration-500 group-hover:-translate-y-1.5 group-hover:scale-[1.03]">
+                  <CardArt
+                    suitId={suitId}
+                    name={c.name}
+                    number={c.number}
+                    visualId={c.visualId}
+                    size="md"
+                    flipOnHover={hasVisual}
+                  />
+                  {hasVisual && !isMock && (
+                    <div className="absolute inset-x-0 -bottom-1 flex justify-center pointer-events-none">
+                      <span className="rounded-full border border-gold-500/20 bg-midnight-200/60 px-2.5 py-0.5 text-[10px] text-gold-400/60 transition-opacity duration-300 group-hover:opacity-0 opacity-100">
+                        翻看牌背
+                      </span>
+                    </div>
+                  )}
+                  {!hasVisual && !isMock && (
+                    <div className="absolute inset-0 flex items-end justify-center pb-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <span className="rounded-full border border-gold-500/30 bg-midnight-200/80 px-3 py-1 text-xs text-gold-300">
+                        查看牌義
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="text-center">
+                  <p className="font-serif text-sm text-cream-100">{c.name}</p>
+                  {isMock && <p className="text-[10px] text-sage-400/40">資料待補</p>}
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

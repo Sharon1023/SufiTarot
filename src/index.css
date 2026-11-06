@@ -63,4 +63,40 @@
   .text-illuminated {
     text-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
   }
+
+  /* 3D card flip utilities */
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .card-3d-inner {
+    transform-style: preserve-3d;
+  }
+
+  .card-3d-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .card-3d-front {
+    transform: rotateY(0deg);
+  }
+
+  .card-3d-back {
+    transform: rotateY(180deg);
+  }
+
+  .group-3d:hover .card-3d-inner,
+  .group-3d:focus-visible .card-3d-inner {
+    transform: rotateY(180deg);
+  }
 }

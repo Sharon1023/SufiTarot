@@ -97,7 +97,7 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
           <div className="relative shrink-0">
             <div className="pointer-events-none absolute inset-0 -m-3 rounded-2xl bg-gold-500/10 blur-2xl animate-pulse-soft" />
             <div className="relative perspective">
-              <CardArt suitId={card.suitId} name={card.name} number={card.number} size="lg" reversed={isReversed} />
+              <CardArt suitId={card.suitId} name={card.name} number={card.number} visualId={card.visualId} size="lg" reversed={isReversed} />
             </div>
           </div>
 
