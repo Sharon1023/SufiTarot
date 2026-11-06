@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', 'src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      spacing: {
+        76: '19rem',
+      },
       colors: {
         velvet: {
           50: '#1a2230',
