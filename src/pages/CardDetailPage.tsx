@@ -8,7 +8,6 @@ import {
   Users,
   Moon,
   Sparkles,
-  Lightbulb,
   Feather,
   Sprout,
 } from 'lucide-react';
@@ -306,47 +305,39 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
           )}
         </section>
 
-        {/* ───── 4. Sufi Oracle ───── */}
-        <section className="mt-12 flex flex-col items-center gap-5 animate-fade-in-up">
+        {/* ───── 4. Sufi Oracle — compact draw ───── */}
+        <section className="mt-10 flex flex-col items-center gap-3 animate-fade-in-up">
           <GoldDivider />
 
-          <div className="flex flex-col items-center gap-2">
-            <SufiOrnament size={40} className="opacity-50" color="#D4AF37" />
-            <h3 className="font-serif text-xl font-semibold text-cream-100 text-illuminated">天啟箴言</h3>
-            <p className="text-xs text-sage-300/50">Sufi Guidance · 領受此刻屬於你的神聖訊息</p>
+          <div className="flex items-center gap-2">
+            <SufiOrnament size={18} className="opacity-40" color="#D4AF37" />
+            <h3 className="font-serif text-base font-semibold text-gold-400/80">天啟箴言</h3>
+            <SufiOrnament size={18} className="opacity-40" color="#D4AF37" />
           </div>
 
-          {/* oracle reveal area */}
-          <div className="relative w-full min-h-[120px] overflow-hidden rounded-2xl border border-gold-500/20 bg-gradient-to-br from-midnight-200/60 to-midnight-300/60 p-6 sm:p-8">
-            <SufiOrnament size={140} className="pointer-events-none absolute -right-6 -top-6 opacity-[0.06]" color="#D4AF37" />
-
-            {!oracleText && (
-              <div className="flex h-full min-h-[80px] flex-col items-center justify-center gap-2 text-center">
-                <Sparkles className="h-6 w-6 text-gold-500/40" />
-                <p className="font-serif text-sm text-sage-300/45">點擊下方按鈕，領受來自蘇菲智者的天啟</p>
-              </div>
-            )}
-
-            {oracleText && (
-              <div key={oracleKey} className="relative z-10 flex flex-col items-center gap-3 animate-fade-in-up text-center">
-                <Lightbulb className="h-6 w-6 text-gold-400/70" />
-                <p className="font-serif text-lg italic leading-loose text-cream-100/90">
-                  「{oracleText}」
-                </p>
-                <div className="h-px w-16 gold-rule opacity-40" />
-              </div>
-            )}
-          </div>
-
-          {/* draw button */}
-          <button
-            onClick={drawOracle}
-            className="group relative inline-flex items-center gap-2.5 rounded-full border-2 border-gold-500/40 bg-gradient-to-br from-velvet-200/60 to-midnight-200/60 px-8 py-3.5 font-serif text-base font-medium text-gold-300 transition-all duration-500 hover:border-gold-500/70 hover:from-velvet-100/60 hover:to-midnight-100/60 hover:shadow-[0_0_25px_rgba(212,175,55,0.20)] active:scale-95"
-          >
-            <span className="pointer-events-none absolute inset-0 rounded-full bg-gold-500/8 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
-            <Sparkles className="h-5 w-5 text-gold-400 transition-transform duration-500 group-hover:rotate-180 group-hover:scale-110" />
-            <span className="relative z-10">{oracleText ? '再抽一次' : '領受天啟'}</span>
-          </button>
+          {/* revealed wisdom or draw button — one or the other */}
+          {oracleText ? (
+            <div key={oracleKey} className="animate-fade-in-up px-2 text-center">
+              <p className="font-serif text-[15px] italic leading-relaxed text-cream-100/85 max-w-md">
+                「{oracleText}」
+              </p>
+              <button
+                onClick={drawOracle}
+                className="mt-3 inline-flex items-center gap-1.5 text-xs text-gold-500/50 transition-colors hover:text-gold-400"
+              >
+                <Sparkles className="h-3.5 w-3.5" />
+                再抽
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={drawOracle}
+              className="group inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-velvet-200/40 px-5 py-2.5 text-sm text-gold-300 transition-all duration-300 hover:border-gold-500/50 hover:bg-velvet-100/40 active:scale-95"
+            >
+              <Sparkles className="h-4 w-4 text-gold-400 transition-transform duration-500 group-hover:rotate-180" />
+              <span className="font-serif">領受天啟</span>
+            </button>
+          )}
         </section>
 
         {/* ───── Closing ───── */}
