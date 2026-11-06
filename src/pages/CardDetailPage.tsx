@@ -309,13 +309,7 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
         <section className="mt-10 flex flex-col items-center gap-3 animate-fade-in-up">
           <GoldDivider />
 
-          <div className="flex items-center gap-2">
-            <SufiOrnament size={18} className="opacity-40" color="#D4AF37" />
-            <h3 className="font-serif text-base font-semibold text-gold-400/80">天啟箴言</h3>
-            <SufiOrnament size={18} className="opacity-40" color="#D4AF37" />
-          </div>
-
-          {/* revealed wisdom or draw button — one or the other */}
+          {/* revealed wisdom or draw prompt — one or the other */}
           {oracleText ? (
             <div key={oracleKey} className="animate-fade-in-up px-2 text-center">
               <p className="font-serif text-[15px] italic leading-relaxed text-cream-100/85 max-w-md">
@@ -330,13 +324,18 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
               </button>
             </div>
           ) : (
-            <button
-              onClick={drawOracle}
-              className="group inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-velvet-200/40 px-5 py-2.5 text-sm text-gold-300 transition-all duration-300 hover:border-gold-500/50 hover:bg-velvet-100/40 active:scale-95"
-            >
-              <Sparkles className="h-4 w-4 text-gold-400 transition-transform duration-500 group-hover:rotate-180" />
-              <span className="font-serif">領受天啟</span>
-            </button>
+            <div className="flex flex-col items-center gap-3">
+              <p className="font-serif text-sm italic text-sage-300/60 max-w-sm text-center leading-relaxed">
+                Ask for Sufi's soft guidance,<br />contemplate and meditate…
+              </p>
+              <button
+                onClick={drawOracle}
+                className="group inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-velvet-200/40 px-5 py-2.5 text-sm text-gold-300 transition-all duration-300 hover:border-gold-500/50 hover:bg-velvet-100/40 active:scale-95"
+              >
+                <Sparkles className="h-4 w-4 text-gold-400 transition-transform duration-500 group-hover:rotate-180" />
+                <span className="font-serif">領受天啟</span>
+              </button>
+            </div>
           )}
         </section>
 
