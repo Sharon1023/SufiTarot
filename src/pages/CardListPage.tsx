@@ -29,6 +29,7 @@ function buildCardList(suitId: SuitId, count: number): CardData[] {
         財務: { upright: '', reversed: '' },
         親情: { upright: '', reversed: '' },
         健康: { upright: '', reversed: '' },
+        個人發展: { upright: '', reversed: '' },
       },
     });
   }
