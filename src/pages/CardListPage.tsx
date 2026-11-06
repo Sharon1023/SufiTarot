@@ -98,13 +98,6 @@ export function CardListPage({ suitId, onSelect, onBack }: CardListPageProps) {
                     visualId={c.visualId}
                     size="md"
                   />
-                  {!isMock && (
-                    <div className="absolute inset-0 flex items-end justify-center pb-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <span className="rounded-full border border-gold-500/30 bg-midnight-200/80 px-3 py-1 text-xs text-gold-300">
-                        查看牌義
-                      </span>
-                    </div>
-                  )}
                 </div>
                 <div className="text-center">
                   <p className="font-serif text-sm text-cream-100">{c.name}</p>
