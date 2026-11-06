@@ -4,13 +4,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        cream: {
-          50: '#fefefb',
-          100: '#fdfbf4',
-          200: '#f9f5ea',
-          300: '#f3ecd8',
-          400: '#e9dec0',
-          500: '#dccda3',
+        velvet: {
+          50: '#1a2230',
+          100: '#131922',
+          200: '#0D1117',
+          300: '#0a0d12',
+          400: '#070a0e',
+          500: '#05070b',
+        },
+        midnight: {
+          50: '#0a2018',
+          100: '#062018',
+          200: '#041914',
+          300: '#031310',
+          400: '#020d0a',
+          500: '#010806',
         },
         emerald: {
           50: '#f0f9f6',
@@ -37,6 +45,21 @@ export default {
           800: '#705821',
           900: '#5c481f',
         },
+        sage: {
+          100: '#c8d5cd',
+          200: '#aebfb4',
+          300: '#94a99e',
+          400: '#7a9388',
+          500: '#647d72',
+        },
+        cream: {
+          50: '#fefefb',
+          100: '#fdfbf4',
+          200: '#f9f5ea',
+          300: '#f3ecd8',
+          400: '#e9dec0',
+          500: '#dccda3',
+        },
       },
       fontFamily: {
         serif: ['"Playfair Display"', '"Cormorant Garamond"', '"Noto Serif TC"', '"Songti TC"', 'serif'],
@@ -51,6 +74,7 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'rotate-slow': 'rotateSlow 80s linear infinite',
         'pulse-soft': 'pulseSoft 4s ease-in-out infinite',
+        'glow-pulse': 'glowPulse 5s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
@@ -79,14 +103,19 @@ export default {
           '100%': { transform: 'rotate(360deg)' },
         },
         pulseSoft: {
-          '0%, 100%': { opacity: '0.4' },
-          '50%': { opacity: '0.8' },
+          '0%, 100%': { opacity: '0.3' },
+          '50%': { opacity: '0.6' },
+        },
+        glowPulse: {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(212, 175, 55, 0.08)' },
+          '50%': { boxShadow: '0 0 40px rgba(212, 175, 55, 0.18)' },
         },
       },
       backgroundImage: {
         'gold-gradient': 'linear-gradient(135deg, #e3bb4e 0%, #D4AF37 50%, #b8962a 100%)',
         'gold-shimmer': 'linear-gradient(90deg, #b8962a 0%, #D4AF37 25%, #f4e5ad 50%, #D4AF37 75%, #b8962a 100%)',
         'emerald-gradient': 'linear-gradient(135deg, #0f4d3c 0%, #0A3A2F 50%, #062821 100%)',
+        'midnight-gradient': 'linear-gradient(180deg, #041914 0%, #0D1117 50%, #041914 100%)',
       },
     },
   },

@@ -10,12 +10,14 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-cream-100 text-emerald-900 font-sans antialiased;
+    @apply bg-midnight-200 text-sage-100 font-sans antialiased;
     background-image:
-      radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.06) 0%, transparent 60%),
-      radial-gradient(ellipse at 0% 100%, rgba(10, 58, 47, 0.04) 0%, transparent 50%);
+      radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 0% 100%, rgba(10, 58, 47, 0.20) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 50%, rgba(4, 25, 20, 0.5) 0%, transparent 60%);
     background-attachment: fixed;
     min-height: 100vh;
+    color-scheme: dark;
   }
 }
 
@@ -28,21 +30,25 @@
 
   .paper-texture {
     background-image:
-      radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(10, 58, 47, 0.02) 0%, transparent 40%);
+      radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(10, 58, 47, 0.10) 0%, transparent 40%);
   }
 
-  .glass-cream {
-    @apply bg-cream-50/80 backdrop-blur-md border border-gold-500/20;
+  .glass-velvet {
+    @apply bg-velvet-200/70 backdrop-blur-md border border-gold-500/15;
   }
 
   .glass-emerald {
-    @apply bg-emerald-800/95 backdrop-blur-lg border border-gold-500/30;
+    @apply bg-midnight-200/80 backdrop-blur-lg border border-gold-500/20;
+  }
+
+  .glass-panel {
+    @apply bg-velvet-200/50 backdrop-blur-sm border border-gold-500/15;
   }
 
   .sufi-watermark {
     background-image:
-      repeating-conic-gradient(from 0deg at 50% 50%, rgba(10, 58, 47, 0.025) 0deg, transparent 30deg, rgba(212, 175, 55, 0.02) 60deg, transparent 90deg);
+      repeating-conic-gradient(from 0deg at 50% 50%, rgba(212, 175, 55, 0.025) 0deg, transparent 30deg, rgba(10, 58, 47, 0.03) 60deg, transparent 90deg);
   }
 
   .scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -52,5 +58,9 @@
 
   .gold-rule {
     background: linear-gradient(90deg, transparent, #D4AF37 30%, #D4AF37 70%, transparent);
+  }
+
+  .text-illuminated {
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
   }
 }
