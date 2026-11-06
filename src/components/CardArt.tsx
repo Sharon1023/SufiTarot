@@ -14,10 +14,51 @@ interface CardArtProps {
 }
 
 const sizeMap = {
-  sm: { w: 'w-28', h: 'h-44', ornament: 60, title: 'text-[11px]', num: 'text-[9px]' },
-  md: { w: 'w-40', h: 'h-60', ornament: 85, title: 'text-sm', num: 'text-xs' },
-  lg: { w: 'w-52', h: 'h-76', ornament: 120, title: 'text-base', num: 'text-sm' },
+  sm: { w: 'w-28', h: 'h-44', ornament: 60, title: 'text-[11px]', num: 'text-[9px]', pad: 'p-1.5', banner: 'h-5', borderWidth: 'border-2', innerBorder: 'border' },
+  md: { w: 'w-40', h: 'h-60', ornament: 85, title: 'text-sm', num: 'text-xs', pad: 'p-2', banner: 'h-7', borderWidth: 'border-2', innerBorder: 'border' },
+  lg: { w: 'w-52', h: 'h-76', ornament: 120, title: 'text-base', num: 'text-sm', pad: 'p-2.5', banner: 'h-8', borderWidth: 'border-[3px]', innerBorder: 'border-2' },
 };
+
+/** Sufi-style decorative border pattern rendered as SVG, tiled inside the card frame. */
+function SufiBorderPattern({ accent = '#D4AF37' }: { accent?: string }) {
+  return (
+    <svg className="pointer-events-none absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 40 60">
+      {/* top repeating arch pattern */}
+      <g stroke={accent} strokeWidth="0.3" fill="none" opacity="0.25">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <path key={`t${i}`} d={`M${i * 8},0 L${i * 8},3 Q${i * 8 + 4},5 ${(i + 1) * 8},3 L${(i + 1) * 8},0`} />
+        ))}
+      </g>
+      {/* bottom repeating arch pattern (mirrored) */}
+      <g stroke={accent} strokeWidth="0.3" fill="none" opacity="0.25">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <path key={`b${i}`} d={`M${i * 8},60 L${i * 8},57 Q${i * 8 + 4},55 ${(i + 1) * 8},57 L${(i + 1) * 8},60`} />
+        ))}
+      </g>
+      {/* left side dots */}
+      <g fill={accent} opacity="0.2">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <circle key={`l${i}`} cx="1.5" cy={6 + i * 9} r="0.6" />
+        ))}
+      </g>
+      {/* right side dots */}
+      <g fill={accent} opacity="0.2">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <circle key={`r${i}`} cx="38.5" cy={6 + i * 9} r="0.6" />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+/** Small eight-pointed star for cartouche decoration. */
+function MiniStar({ className = '', color = '#D4AF37' }: { className?: string; color?: string }) {
+  return (
+    <svg viewBox="0 0 12 12" className={className} fill="none" style={{ color }}>
+      <path d="M6,0 L7,5 L12,6 L7,7 L6,12 L5,7 L0,6 L5,5 Z" fill="currentColor" opacity="0.5" />
+    </svg>
+  );
+}
 
 export function CardArt({
   suitId,
@@ -33,24 +74,30 @@ export function CardArt({
   const showVisual = hasVisual(visualId);
 
   const cardFront = showVisual ? (
-    <div className={`relative ${s.w} ${s.h} shrink-0 overflow-hidden rounded-xl border-2 border-gold-500/50 shadow-[0_8px_30px_rgba(212,175,55,0.10)]`}>
+    <div className={`relative ${s.w} ${s.h} shrink-0 overflow-hidden rounded-xl ${s.borderWidth} border-gold-500/50 shadow-[0_8px_30px_rgba(212,175,55,0.10)]`}>
+      {/* Artwork fills the whole card */}
       <CardVisual visualId={visualId as VisualId} className="absolute inset-0 h-full w-full" />
 
-      {/* corner flourishes */}
-      <div className="pointer-events-none absolute inset-0 z-10">
-        <div className="absolute top-1.5 left-1.5 w-5 h-5 border-t border-l rounded-tl-md border-gold-500/40" />
-        <div className="absolute top-1.5 right-1.5 w-5 h-5 border-t border-r rounded-tr-md border-gold-500/40" />
-        <div className="absolute bottom-1.5 left-1.5 w-5 h-5 border-b border-l rounded-bl-md border-gold-500/40" />
-        <div className="absolute bottom-1.5 right-1.5 w-5 h-5 border-b border-r rounded-br-md border-gold-500/40" />
+      {/* Inner decorative border frame */}
+      <div className={`pointer-events-none absolute inset-1 z-10 rounded-lg ${s.innerBorder} border-gold-500/30`} />
+      <SufiBorderPattern accent="#D4AF37" />
+
+      {/* Top number cartouche */}
+      <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2">
+        <div className={`flex items-center gap-1.5 ${s.banner} bg-gradient-to-b from-midnight-200/95 to-midnight-300/90 px-3 border-x border-gold-500/30`}>
+          <MiniStar className="h-2.5 w-2.5" />
+          <span className={`${s.num} font-serif tracking-[0.25em] text-gold-400/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]`}>{number}</span>
+          <MiniStar className="h-2.5 w-2.5" />
+        </div>
       </div>
 
-      {/* number + name overlay */}
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-end gap-1 p-2 pb-3">
-        <div className={`${s.num} font-serif tracking-[0.2em] uppercase text-gold-400/80 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]`}>{number}</div>
-        <div className={`font-serif ${s.title} text-center leading-tight text-cream-100 drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)] px-1`}>
-          {name}
+      {/* Bottom name cartouche */}
+      <div className="absolute left-1/2 bottom-0 z-20 -translate-x-1/2">
+        <div className={`flex items-center gap-2 ${s.banner} bg-gradient-to-t from-midnight-200/95 to-midnight-300/90 px-4 border-x border-gold-500/30`}>
+          <div className="h-px w-3 gold-rule opacity-50" />
+          <span className={`font-serif ${s.title} text-center leading-none text-cream-100 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] whitespace-nowrap`}>{name}</span>
+          <div className="h-px w-3 gold-rule opacity-50" />
         </div>
-        <div className="h-px w-8 gold-rule opacity-60" />
       </div>
     </div>
   ) : (
@@ -61,48 +108,53 @@ export function CardArt({
           : 'bg-gradient-to-br from-velvet-100 via-velvet-200 to-midnight-200 border-2 border-gold-500/35 shadow-[0_8px_24px_rgba(4,25,20,0.40)]'
       }`}
     >
-      {/* corner flourishes */}
-      <div className="pointer-events-none absolute inset-0 z-10">
-        <div className="absolute top-1.5 left-1.5 w-5 h-5 border-t border-l rounded-tl-md border-gold-500/40" />
-        <div className="absolute top-1.5 right-1.5 w-5 h-5 border-t border-r rounded-tr-md border-gold-500/40" />
-        <div className="absolute bottom-1.5 left-1.5 w-5 h-5 border-b border-l rounded-bl-md border-gold-500/40" />
-        <div className="absolute bottom-1.5 right-1.5 w-5 h-5 border-b border-r rounded-br-md border-gold-500/40" />
-      </div>
+      {/* Inner decorative border frame */}
+      <div className={`pointer-events-none absolute inset-1 z-10 rounded-lg border border-gold-500/25`} />
+      <SufiBorderPattern accent="#D4AF37" />
 
       {/* watermark pattern */}
-      <div className="sufi-watermark absolute inset-0" />
+      <div className="sufi-watermark absolute inset-2 rounded-lg" />
+
+      {/* Top number cartouche */}
+      <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2">
+        <div className={`flex items-center gap-1.5 ${s.banner} bg-gradient-to-b from-midnight-200/95 to-midnight-300/90 px-3 border-x border-gold-500/30`}>
+          <MiniStar className="h-2.5 w-2.5" />
+          <span className={`${s.num} font-serif tracking-[0.25em] text-gold-400/80`}>{number}</span>
+          <MiniStar className="h-2.5 w-2.5" />
+        </div>
+      </div>
 
       {/* center ornament */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 p-2">
-        <div className={`${s.num} font-serif tracking-[0.2em] uppercase text-gold-400/70`}>{number}</div>
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-1.5 p-2">
         <SufiOrnament
           size={s.ornament}
           className="animate-rotate-slow opacity-60"
           color="#D4AF37"
         />
-        <div className={`font-serif ${s.title} text-center leading-tight text-sage-100 px-1`}>
-          {name}
+      </div>
+
+      {/* Bottom name cartouche */}
+      <div className="absolute left-1/2 bottom-0 z-20 -translate-x-1/2">
+        <div className={`flex items-center gap-2 ${s.banner} bg-gradient-to-t from-midnight-200/95 to-midnight-300/90 px-4 border-x border-gold-500/30`}>
+          <div className="h-px w-3 gold-rule opacity-50" />
+          <span className={`font-serif ${s.title} text-center leading-none text-cream-100 whitespace-nowrap`}>{name}</span>
+          <div className="h-px w-3 gold-rule opacity-50" />
         </div>
-        <div className="h-px w-10 gold-rule opacity-50" />
       </div>
     </div>
   );
 
-  // Simple reversed mode (no flip, just rotate)
   if (reversed && !flipOnHover) {
     return <div className="rotate-180">{cardFront}</div>;
   }
 
-  // 3D flip-on-hover mode: front shows visual, back shows card back pattern
   if (flipOnHover) {
     return (
       <div className={`group-3d ${s.w} ${s.h} perspective shrink-0`}>
         <div className="card-3d-inner relative h-full w-full transform-style-preserve-3d transition-transform duration-700">
-          {/* front */}
           <div className="card-3d-face card-3d-front absolute inset-0 backface-hidden">
             {cardFront}
           </div>
-          {/* back */}
           <div className="card-3d-face card-3d-back absolute inset-0 rotate-y-180 backface-hidden overflow-hidden rounded-xl border-2 border-gold-500/35">
             <CardBack />
           </div>

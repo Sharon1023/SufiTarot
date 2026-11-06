@@ -353,14 +353,24 @@ export function hasVisual(visualId: string | undefined): visualId is VisualId {
 export function CardBack({ className }: { className?: string }) {
   return (
     <div className={`relative flex h-full w-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-midnight-200 via-midnight-300 to-velvet-300 ${className ?? ''}`}>
-      <div className="sufi-watermark absolute inset-0" />
-      {/* corner flourishes */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-1.5 left-1.5 w-5 h-5 border-t border-l rounded-tl-md border-gold-500/40" />
-        <div className="absolute top-1.5 right-1.5 w-5 h-5 border-t border-r rounded-tr-md border-gold-500/40" />
-        <div className="absolute bottom-1.5 left-1.5 w-5 h-5 border-b border-l rounded-bl-md border-gold-500/40" />
-        <div className="absolute bottom-1.5 right-1.5 w-5 h-5 border-b border-r rounded-br-md border-gold-500/40" />
-      </div>
+      <div className="sufi-watermark absolute inset-2 rounded-lg" />
+      {/* inner decorative border frame */}
+      <div className="pointer-events-none absolute inset-1 rounded-lg border border-gold-500/30" />
+
+      {/* Sufi arch border pattern along top & bottom */}
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 40 60">
+        <g stroke="#D4AF37" strokeWidth="0.3" fill="none" opacity="0.25">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <path key={`t${i}`} d={`M${i * 8},1 L${i * 8},4 Q${i * 8 + 4},6 ${(i + 1) * 8},4 L${(i + 1) * 8},1`} />
+          ))}
+        </g>
+        <g stroke="#D4AF37" strokeWidth="0.3" fill="none" opacity="0.25">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <path key={`b${i}`} d={`M${i * 8},59 L${i * 8},56 Q${i * 8 + 4},54 ${(i + 1) * 8},56 L${(i + 1) * 8},59`} />
+          ))}
+        </g>
+      </svg>
+
       <SufiOrnament size={80} className="animate-rotate-slow opacity-50" color="#D4AF37" />
       <div className="h-px w-12 gold-rule opacity-40" />
       <p className="font-serif text-[10px] tracking-[0.3em] uppercase text-gold-400/50">Sufi Tarot</p>
