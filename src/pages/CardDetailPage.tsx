@@ -171,7 +171,6 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
                 visualId={card.visualId}
                 size="lg"
                 reversed={isReversed}
-                flipOnHover
               />
             </div>
           </div>

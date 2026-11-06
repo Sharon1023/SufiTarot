@@ -1,5 +1,5 @@
 import { SufiOrnament } from './SufiOrnament';
-import { CardVisual, CardBack, hasVisual } from './CardVisual';
+import { CardVisual, hasVisual } from './CardVisual';
 import type { VisualId } from './CardVisual';
 import type { SuitId } from '../data/cards';
 
@@ -10,7 +10,6 @@ interface CardArtProps {
   visualId?: string;
   reversed?: boolean;
   size?: 'sm' | 'md' | 'lg';
-  flipOnHover?: boolean;
 }
 
 const sizeMap = {
@@ -67,7 +66,6 @@ export function CardArt({
   visualId,
   reversed = false,
   size = 'md',
-  flipOnHover = false,
 }: CardArtProps) {
   const s = sizeMap[size];
   const isMajor = suitId === 'major';
@@ -144,23 +142,8 @@ export function CardArt({
     </div>
   );
 
-  if (reversed && !flipOnHover) {
+  if (reversed) {
     return <div className="rotate-180">{cardFront}</div>;
-  }
-
-  if (flipOnHover) {
-    return (
-      <div className={`group-3d ${s.w} ${s.h} perspective shrink-0`}>
-        <div className="card-3d-inner relative h-full w-full transform-style-preserve-3d transition-transform duration-700">
-          <div className="card-3d-face card-3d-front absolute inset-0 backface-hidden">
-            {cardFront}
-          </div>
-          <div className="card-3d-face card-3d-back absolute inset-0 rotate-y-180 backface-hidden overflow-hidden rounded-xl border-2 border-gold-500/35">
-            <CardBack />
-          </div>
-        </div>
-      </div>
-    );
   }
 
   return cardFront;

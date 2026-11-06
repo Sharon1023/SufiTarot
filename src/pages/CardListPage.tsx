@@ -71,7 +71,7 @@ export function CardListPage({ suitId, onSelect, onBack }: CardListPageProps) {
                 </p>
               )}
               {suitId === 'major' && (
-                <p className="mt-3 text-xs text-gold-500/50">將滑鼠移至卡片上以翻看牌背</p>
+                <p className="mt-3 text-xs text-gold-500/50">點擊卡片以查看完整牌義解析</p>
               )}
             </div>
           </div>
@@ -81,7 +81,6 @@ export function CardListPage({ suitId, onSelect, onBack }: CardListPageProps) {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {cards.map((c, i) => {
             const isMock = !c.visualId && !CARDS.some((rc) => rc.id === c.id);
-            const hasVisual = !!c.visualId;
             return (
               <button
                 key={c.id}
@@ -98,16 +97,8 @@ export function CardListPage({ suitId, onSelect, onBack }: CardListPageProps) {
                     number={c.number}
                     visualId={c.visualId}
                     size="md"
-                    flipOnHover={hasVisual}
                   />
-                  {hasVisual && !isMock && (
-                    <div className="absolute inset-x-0 -bottom-1 flex justify-center pointer-events-none">
-                      <span className="rounded-full border border-gold-500/20 bg-midnight-200/60 px-2.5 py-0.5 text-[10px] text-gold-400/60 transition-opacity duration-300 group-hover:opacity-0 opacity-100">
-                        翻看牌背
-                      </span>
-                    </div>
-                  )}
-                  {!hasVisual && !isMock && (
+                  {!isMock && (
                     <div className="absolute inset-0 flex items-end justify-center pb-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <span className="rounded-full border border-gold-500/30 bg-midnight-200/80 px-3 py-1 text-xs text-gold-300">
                         查看牌義
