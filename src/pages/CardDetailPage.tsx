@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
   RotateCw,
-  BookOpen,
   Compass,
   Heart,
   Briefcase,
@@ -9,10 +8,8 @@ import {
   Users,
   Moon,
   Sparkles,
-  Sun,
-  ChevronDown,
+  Lightbulb,
   Feather,
-  ScrollText,
 } from 'lucide-react';
 import { CARDS, SUITS } from '../data/cards';
 import type { CardData, Orientation, LifeArea } from '../data/cards';
@@ -25,62 +22,88 @@ interface CardDetailPageProps {
   onBack: () => void;
 }
 
-type ChapterId = 'philosophy' | 'definition' | 'guidance' | 'meditation' | null;
-
-const lifeAreas: { id: LifeArea; icon: React.ComponentType<{ className?: string }>; color: string }[] = [
-  { id: '感情', icon: Heart, color: 'rose' },
-  { id: '事業', icon: Briefcase, color: 'gold' },
-  { id: '財務', icon: Coins, color: 'emerald' },
-  { id: '親情', icon: Users, color: 'sky' },
-  { id: '健康', icon: Moon, color: 'violet' },
+const lifeAreas: { id: LifeArea; icon: React.ComponentType<{ className?: string }>; color: string; accent: string }[] = [
+  { id: '感情', icon: Heart, color: 'rose', accent: 'text-rose-300' },
+  { id: '事業', icon: Briefcase, color: 'gold', accent: 'text-gold-300' },
+  { id: '財務', icon: Coins, color: 'emerald', accent: 'text-emerald-300' },
+  { id: '親情', icon: Users, color: 'sky', accent: 'text-sky-300' },
+  { id: '健康', icon: Moon, color: 'violet', accent: 'text-violet-300' },
 ];
 
-const areaStyles: Record<string, { border: string; bg: string; text: string; activeBorder: string; activeBg: string; activeText: string }> = {
-  rose: {
-    border: 'border-rose-400/20', bg: 'bg-velvet-200/30', text: 'text-rose-300/70',
-    activeBorder: 'border-rose-400/50', activeBg: 'bg-rose-950/40', activeText: 'text-rose-300',
-  },
-  gold: {
-    border: 'border-gold-500/20', bg: 'bg-velvet-200/30', text: 'text-gold-400/70',
-    activeBorder: 'border-gold-500/50', activeBg: 'bg-gold-900/30', activeText: 'text-gold-300',
-  },
-  emerald: {
-    border: 'border-emerald-500/20', bg: 'bg-velvet-200/30', text: 'text-emerald-300/70',
-    activeBorder: 'border-emerald-400/50', activeBg: 'bg-emerald-950/40', activeText: 'text-emerald-300',
-  },
-  sky: {
-    border: 'border-sky-400/20', bg: 'bg-velvet-200/30', text: 'text-sky-300/70',
-    activeBorder: 'border-sky-400/50', activeBg: 'bg-sky-950/40', activeText: 'text-sky-300',
-  },
-  violet: {
-    border: 'border-violet-400/20', bg: 'bg-velvet-200/30', text: 'text-violet-300/70',
-    activeBorder: 'border-violet-400/50', activeBg: 'bg-violet-950/40', activeText: 'text-violet-300',
-  },
+const areaBorder: Record<string, string> = {
+  rose: 'border-rose-400/20',
+  gold: 'border-gold-500/20',
+  emerald: 'border-emerald-500/20',
+  sky: 'border-sky-400/20',
+  violet: 'border-violet-400/20',
 };
 
-const chapters: { id: ChapterId; label: string; subtitle: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { id: 'philosophy', label: '核心蘇菲哲學', subtitle: 'Sufi Philosophy', icon: Feather },
-  { id: 'definition', label: '書本定義', subtitle: 'Book Definition', icon: BookOpen },
-  { id: 'guidance', label: '一對一導師引導', subtitle: 'Mentor Guidance', icon: Compass },
-  { id: 'meditation', label: '每日冥想與肯定句', subtitle: 'Meditation & Affirmation', icon: Sun },
+const areaIconBg: Record<string, string> = {
+  rose: 'bg-rose-950/40 border-rose-400/40 text-rose-300',
+  gold: 'bg-gold-900/30 border-gold-500/40 text-gold-300',
+  emerald: 'bg-emerald-950/40 border-emerald-400/40 text-emerald-300',
+  sky: 'bg-sky-950/40 border-sky-400/40 text-sky-300',
+  violet: 'bg-violet-950/40 border-violet-400/40 text-violet-300',
+};
+
+const sufiWisdomPool = [
+  '傷口是光進入你身體的地方。——魯米',
+  '你尋找的火種，正在你之內。——魯米',
+  '一滴水如何不乾涸？讓它流入河流。——蘇菲諺語',
+  '信任神，但先繫好你的駱駝。——蘇菲諺語',
+  '最大的貧窮不是缺乏金錢，而是缺乏內在的寧靜。——蘇菲導師',
+  '一個覺醒的人，能療癒七代祖先與七代後裔。——蘇菲教導',
+  '有一束光，從你心中通往宇宙。——魯米',
+  '你不是一滴水在海洋裡，你是整個海洋在一滴水裡。——魯米',
+  '讓你自己被更強的愛所牽引。——魯米',
+  '外在的知識可以言傳，內在的智慧只能被寂靜承載。——蘇菲教導',
+  '真正的路是走出來的，不是想出來的。——蘇菲行者智慧',
+  '當你真正信任，整個宇宙會托住你。——蘇菲教導',
 ];
 
-function ChapterDivider() {
+function SectionHeading({ icon: Icon, title, subtitle }: { icon: React.ComponentType<{ className?: string }>; title: string; subtitle?: string }) {
+  return (
+    <div className="mb-5 flex items-center gap-3">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gold-500/25 bg-midnight-200/50">
+        <Icon className="h-4.5 w-4.5 text-gold-400" />
+      </div>
+      <div className="flex flex-col">
+        <h3 className="font-serif text-lg font-semibold text-cream-100 text-illuminated">{title}</h3>
+        {subtitle && <p className="text-[10px] uppercase tracking-[0.2em] text-gold-500/40">{subtitle}</p>}
+      </div>
+    </div>
+  );
+}
+
+function GoldDivider() {
   return (
     <div className="flex items-center gap-3 py-1">
-      <div className="h-px flex-1 gold-rule opacity-20" />
+      <div className="h-px flex-1 gold-rule opacity-25" />
       <Sparkles className="h-3 w-3 text-gold-500/40" />
-      <div className="h-px flex-1 gold-rule opacity-20" />
+      <div className="h-px flex-1 gold-rule opacity-25" />
     </div>
   );
 }
 
 export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
   const [orientation, setOrientation] = useState<Orientation>('upright');
-  const [activeArea, setActiveArea] = useState<LifeArea | null>(null);
-  const [openChapter, setOpenChapter] = useState<ChapterId>('philosophy');
+  const [oracleText, setOracleText] = useState<string | null>(null);
+  const [oracleKey, setOracleKey] = useState(0);
 
   const card: CardData | undefined = CARDS.find((c) => c.id === cardId);
+
+  const drawOracle = useCallback(() => {
+    if (!card) return;
+    const pool: string[] = [];
+    if (card.meditation) {
+      pool.push(card.meditation.affirmation);
+      pool.push(...card.meditation.contemplations);
+    }
+    pool.push(...sufiWisdomPool);
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    setOracleText(pick);
+    setOracleKey((k) => k + 1);
+  }, [card]);
 
   if (!card) {
     return (
@@ -104,11 +127,6 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
   const suit = SUITS.find((s) => s.id === card.suitId)!;
   const meaning = orientation === 'upright' ? card.upright : card.reversed;
   const isReversed = orientation === 'reversed';
-  const guidance = activeArea ? card.guidance[activeArea][orientation] : null;
-
-  const toggleChapter = (id: ChapterId) => {
-    setOpenChapter((prev) => (prev === id ? null : id));
-  };
 
   return (
     <div className="min-h-screen">
@@ -119,10 +137,9 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
       />
 
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
-        {/* ───── Layer 1: Sanctuary Hero ───── */}
-        <div className="relative flex flex-col items-center gap-6 animate-fade-in-up">
-          {/* ambient glow */}
-          <div className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 h-64 w-64 rounded-full bg-gold-500/8 blur-3xl" />
+        {/* ───── 1. Hero: Card + Tags ───── */}
+        <div className="flex flex-col items-center gap-5 animate-fade-in-up">
+          <div className="pointer-events-none absolute left-1/2 top-20 -translate-x-1/2 h-64 w-64 rounded-full bg-gold-500/8 blur-3xl" />
 
           {/* card number badge */}
           <div className="relative z-10 flex items-center gap-2 rounded-full border border-gold-500/20 bg-velvet-200/40 px-4 py-1.5 text-[11px] tracking-[0.25em] text-gold-400/60">
@@ -131,7 +148,7 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
             <span className="uppercase">{suit.subtitle}</span>
           </div>
 
-          {/* card art with flip */}
+          {/* card art */}
           <div className="relative shrink-0">
             <div className="pointer-events-none absolute inset-0 -m-4 rounded-2xl bg-gold-500/8 blur-2xl animate-pulse-soft" />
             <div className="relative perspective">
@@ -147,16 +164,50 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
             </div>
           </div>
 
-          {/* name + sufi name */}
-          <div className="relative z-10 flex flex-col items-center gap-1 text-center">
+          {/* name */}
+          <div className="flex flex-col items-center gap-1 text-center">
             <h2 className="font-serif text-3xl font-bold text-cream-100 text-illuminated sm:text-4xl">
               {card.name}
             </h2>
             <p className="font-serif text-sm italic text-gold-400/70">{card.sufiName}</p>
           </div>
 
-          {/* orientation toggle */}
-          <div className="relative z-10 inline-flex rounded-full border border-gold-500/20 bg-velvet-200/40 p-1">
+          {/* tags */}
+          <div className="flex flex-wrap justify-center gap-2 max-w-md">
+            {meaning.keywords.map((k) => (
+              <span key={k} className="rounded-full border border-gold-500/15 bg-velvet-200/30 px-3 py-1 text-xs text-sage-100/80">
+                {k}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* ───── 2. 牌面解析 (merged philosophy + definition) ───── */}
+        <section className="mt-12 animate-fade-in-up rounded-2xl border border-gold-500/15 glass-panel p-6 sm:p-8">
+          <SectionHeading icon={Feather} title="牌面解析" subtitle="Card Interpretation" />
+
+          <p className="text-sm leading-loose text-sage-100/85">
+            {meaning.philosophy}
+          </p>
+
+          <GoldDivider />
+
+          <p className="text-sm leading-loose text-sage-100/80">
+            {meaning.definition}
+          </p>
+
+          <div className="mt-4 flex items-center gap-2 text-xs text-sage-300/50">
+            <span>{suit.name} · {suit.element}元素 · {suit.elementArabic}</span>
+            <span className={`rounded-full px-2.5 py-0.5 ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
+              {isReversed ? '逆位能量流轉' : '正位之光顯現'}
+            </span>
+          </div>
+        </section>
+
+        {/* ───── 3. Orientation toggle ───── */}
+        <div className="mt-10 flex flex-col items-center gap-3 animate-fade-in">
+          <p className="font-serif text-xs uppercase tracking-[0.3em] text-gold-500/40">Orientation · 正逆位</p>
+          <div className="inline-flex rounded-full border border-gold-500/20 bg-velvet-200/40 p-1">
             <button
               onClick={() => setOrientation('upright')}
               className={`flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 ${
@@ -180,253 +231,99 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
               逆位
             </button>
           </div>
+        </div>
 
-          {/* keywords */}
-          <div className="relative z-10 flex flex-wrap justify-center gap-2 max-w-md">
-            {meaning.keywords.map((k) => (
-              <span key={k} className="rounded-full border border-gold-500/15 bg-velvet-200/30 px-3 py-1 text-xs text-sage-100/80">
-                {k}
-              </span>
-            ))}
+        {/* ───── 4. Life Area Guidance (all visible) ───── */}
+        <section className="mt-8">
+          <SectionHeading icon={Compass} title="生活領域論述" subtitle="Life Areas · 五大生活面向" />
+
+          <div key={orientation} className="flex flex-col gap-3">
+            {lifeAreas.map((area, idx) => {
+              const Icon = area.icon;
+              const text = card.guidance[area.id][orientation];
+              return (
+                <div
+                  key={area.id}
+                  style={{ animationDelay: `${idx * 80}ms` }}
+                  className={`animate-fade-in-up rounded-2xl border ${areaBorder[area.color]} bg-velvet-200/30 p-5 transition-colors duration-300 hover:border-gold-500/30`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${areaIconBg[area.color]}`}>
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className={`font-serif text-base font-semibold ${area.accent}`}>{area.id}</span>
+                      <span className="text-[10px] uppercase tracking-[0.15em] text-gold-500/35">
+                        {area.id === '感情' && 'Love & Relationship'}
+                        {area.id === '事業' && 'Career & Vocation'}
+                        {area.id === '財務' && 'Finance & Wealth'}
+                        {area.id === '親情' && 'Family & Kinship'}
+                        {area.id === '健康' && 'Health & Wellbeing'}
+                      </span>
+                    </div>
+                    <span className={`ml-auto rounded-full px-2.5 py-0.5 text-[10px] ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
+                      {isReversed ? '逆位' : '正位'}
+                    </span>
+                  </div>
+                  <div className="mt-3 h-px gold-rule opacity-15" />
+                  <p className="mt-3 text-sm leading-loose text-sage-100/85">{text}</p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ───── 5. Sufi Oracle — Lucky Draw ───── */}
+        <section className="mt-12 flex flex-col items-center gap-5 animate-fade-in-up">
+          <GoldDivider />
+
+          <div className="flex flex-col items-center gap-2">
+            <SufiOrnament size={40} className="opacity-50" color="#D4AF37" />
+            <h3 className="font-serif text-xl font-semibold text-cream-100 text-illuminated">天啟箴言</h3>
+            <p className="text-xs text-sage-300/50">Sufi Guidance · 領受此刻屬於你的神聖訊息</p>
           </div>
 
-          <p className="relative z-10 text-xs text-sage-300/50">
-            {suit.name} · {suit.element}元素 · {suit.elementArabic}
-            {isReversed ? ' · 逆位能量流轉' : ' · 正位之光顯現'}
-          </p>
-        </div>
+          {/* oracle reveal area */}
+          <div className="relative w-full min-h-[120px] overflow-hidden rounded-2xl border border-gold-500/20 bg-gradient-to-br from-midnight-200/60 to-midnight-300/60 p-6 sm:p-8">
+            <SufiOrnament size={140} className="pointer-events-none absolute -right-6 -top-6 opacity-[0.06]" color="#D4AF37" />
 
-        {/* ───── Layer 2: Chapter Divider ───── */}
-        <div className="mt-12 mb-6 flex flex-col items-center gap-2 animate-fade-in">
-          <SufiOrnament size={36} className="opacity-40" color="#D4AF37" />
-          <p className="font-serif text-xs uppercase tracking-[0.3em] text-gold-500/40">Chapters · 章節</p>
-        </div>
-
-        {/* ───── Layer 3: Unfolding Chapters ───── */}
-        <div className="flex flex-col gap-3">
-          {chapters.map((ch, idx) => {
-            const isOpen = openChapter === ch.id;
-            const Icon = ch.icon;
-            const isMeditationMissing = ch.id === 'meditation' && !card.meditation;
-
-            if (isMeditationMissing) return null;
-
-            return (
-              <div
-                key={ch.id}
-                style={{ animationDelay: `${idx * 100}ms` }}
-                className="animate-fade-in-up overflow-hidden rounded-2xl border border-gold-500/15 glass-panel"
-              >
-                {/* chapter header — clickable */}
-                <button
-                  onClick={() => toggleChapter(ch.id)}
-                  className={`flex w-full items-center gap-3 px-5 py-4 text-left transition-colors duration-300 ${
-                    isOpen ? 'bg-midnight-200/30' : 'hover:bg-velvet-200/20'
-                  }`}
-                >
-                  {/* chapter number */}
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold-500/25 font-serif text-xs text-gold-400/70">
-                    {idx + 1}
-                  </span>
-
-                  {/* icon */}
-                  <Icon className={`h-5 w-5 shrink-0 transition-colors duration-300 ${isOpen ? 'text-gold-400' : 'text-gold-500/50'}`} />
-
-                  {/* labels */}
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <span className="font-serif text-sm font-medium text-cream-100">{ch.label}</span>
-                    <span className="text-[10px] uppercase tracking-[0.15em] text-gold-500/40">{ch.subtitle}</span>
-                  </div>
-
-                  {/* status badge for guidance chapter */}
-                  {ch.id === 'guidance' && activeArea && (
-                    <span className="hidden rounded-full border border-gold-500/20 bg-midnight-200/40 px-2.5 py-0.5 text-[10px] text-gold-400/60 sm:inline">
-                      {activeArea}
-                    </span>
-                  )}
-
-                  {/* chevron */}
-                  <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-gold-500/50 transition-transform duration-500 ${
-                      isOpen ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                {/* chapter content — unfolding */}
-                {isOpen && (
-                  <div key={`${ch.id}-${orientation}`} className="animate-fade-in-up px-5 pb-6">
-                    <ChapterDivider />
-
-                    {/* ── Philosophy ── */}
-                    {ch.id === 'philosophy' && (
-                      <div className="pt-3">
-                        <div className="mb-3 flex items-center gap-2">
-                          <SufiOrnament size={16} className="opacity-50" color="#D4AF37" />
-                          <h4 className="font-serif text-base font-medium text-cream-100">核心蘇菲哲學</h4>
-                          <span className={`ml-auto rounded-full px-2.5 py-0.5 text-[10px] ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
-                            {isReversed ? '逆位' : '正位'}
-                          </span>
-                        </div>
-                        <p className="border-l-2 border-gold-500/40 pl-4 text-sm leading-loose text-sage-100/85">
-                          {meaning.philosophy}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* ── Definition ── */}
-                    {ch.id === 'definition' && (
-                      <div className="pt-3">
-                        <div className="mb-3 flex items-center gap-2">
-                          <BookOpen className="h-4 w-4 text-gold-500/80" />
-                          <h4 className="font-serif text-base font-medium text-cream-100">書本定義</h4>
-                          <span className={`ml-auto rounded-full px-2.5 py-0.5 text-[10px] ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
-                            {isReversed ? '逆位' : '正位'}
-                          </span>
-                        </div>
-                        <p className="text-sm leading-loose text-sage-100/80">{meaning.definition}</p>
-                      </div>
-                    )}
-
-                    {/* ── Guidance ── */}
-                    {ch.id === 'guidance' && (
-                      <div className="pt-3">
-                        <p className="mb-4 text-xs leading-relaxed text-sage-300/55">
-                          選擇一個生命領域，導師將根據〈{card.name}〉的{isReversed ? '逆位' : '正位'}能量，為你展開一段深度反思。
-                        </p>
-
-                        {/* life area buttons */}
-                        <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-5">
-                          {lifeAreas.map((area) => {
-                            const s = areaStyles[area.color];
-                            const Icon = area.icon;
-                            const isActive = activeArea === area.id;
-                            return (
-                              <button
-                                key={area.id}
-                                onClick={() => setActiveArea(area.id)}
-                                className={`group flex flex-col items-center gap-1.5 rounded-xl border p-3 transition-all duration-300 ${
-                                  isActive
-                                    ? `${s.activeBorder} ${s.activeBg} ${s.activeText} -translate-y-0.5 shadow-md`
-                                    : `${s.border} ${s.bg} ${s.text} hover:-translate-y-0.5 hover:border-gold-500/35`
-                                }`}
-                              >
-                                <Icon className={`h-5 w-5 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`} />
-                                <span className="font-serif text-xs font-medium">{area.id}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-
-                        {/* guidance text — unfolds within */}
-                        {guidance && activeArea && (
-                          <div
-                            key={`${activeArea}-${orientation}`}
-                            className="mt-4 animate-slide-in-right overflow-hidden rounded-xl border border-gold-500/15 bg-gradient-to-br from-velvet-200/40 to-midnight-200/40 p-5 sm:p-6"
-                          >
-                            <SufiOrnament size={120} className="pointer-events-none absolute -right-4 -top-4 opacity-[0.06]" color="#D4AF37" />
-
-                            <div className="relative z-10 flex flex-col gap-3">
-                              <div className="flex items-center gap-2.5">
-                                {(() => {
-                                  const areaInfo = lifeAreas.find((a) => a.id === activeArea)!;
-                                  const s = areaStyles[areaInfo.color];
-                                  const Icon = areaInfo.icon;
-                                  return (
-                                    <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${s.activeBorder} ${s.activeBg} ${s.activeText}`}>
-                                      <Icon className="h-4 w-4" />
-                                    </div>
-                                  );
-                                })()}
-                                <div className="flex flex-col">
-                                  <p className="text-[9px] uppercase tracking-[0.2em] text-gold-500/45">導師引導</p>
-                                  <h5 className="font-serif text-sm font-semibold text-cream-100">〈{card.name}〉· {activeArea}</h5>
-                                </div>
-                                <span className={`ml-auto rounded-full px-2.5 py-0.5 text-[10px] ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
-                                  {isReversed ? '逆位' : '正位'}
-                                </span>
-                              </div>
-
-                              <div className="h-px gold-rule opacity-20" />
-
-                              <p className="font-serif text-[15px] leading-loose text-cream-100/90">{guidance}</p>
-
-                              <div className="mt-1 flex items-start gap-2 rounded-lg border border-gold-500/10 bg-midnight-200/30 p-3">
-                                <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold-500/70" />
-                                <p className="text-[11px] leading-relaxed text-sage-300/55">
-                                  靜下心，將這段引導讀三遍。第一遍以眼讀，第二遍以心讀，第三遍讓它在你的呼吸中沉降——答案會在你沉默時浮現。
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {!activeArea && (
-                          <div className="mt-4 flex flex-col items-center gap-2 rounded-xl border border-dashed border-gold-500/15 bg-velvet-200/20 p-6 text-center">
-                            <SufiOrnament size={40} className="opacity-20" color="#D4AF37" />
-                            <p className="text-xs text-sage-300/45">選擇上方一個生命領域，開始你的反思之旅</p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* ── Meditation ── */}
-                    {ch.id === 'meditation' && card.meditation && (
-                      <div className="pt-3">
-                        {/* contemplation questions */}
-                        <div className="mb-5">
-                          <h4 className="mb-3 flex items-center gap-2 font-serif text-sm font-medium text-cream-100">
-                            <Feather className="h-4 w-4 text-gold-500/70" />
-                            心靈反思問題
-                          </h4>
-                          <ul className="flex flex-col gap-2.5">
-                            {card.meditation.contemplations.map((q, i) => (
-                              <li
-                                key={i}
-                                style={{ animationDelay: `${i * 80}ms` }}
-                                className="flex items-start gap-3 animate-fade-in-up rounded-xl border border-gold-500/10 bg-midnight-200/40 p-3.5"
-                              >
-                                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-gold-500/25 font-serif text-[10px] text-gold-400">
-                                  {i + 1}
-                                </span>
-                                <span className="text-sm leading-relaxed text-sage-100/85">{q}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <ChapterDivider />
-
-                        {/* affirmation */}
-                        <div className="mt-4 relative overflow-hidden rounded-xl border border-gold-500/20 bg-gradient-to-br from-midnight-200/60 to-midnight-300/60 p-5">
-                          <SufiOrnament size={70} className="pointer-events-none absolute -right-2 -top-2 opacity-15" color="#D4AF37" />
-                          <div className="relative z-10">
-                            <h4 className="mb-2 flex items-center gap-2 font-serif text-sm font-medium text-gold-300">
-                              <Sparkles className="h-4 w-4 text-gold-400/80" />
-                              靈性肯定句
-                            </h4>
-                            <p className="font-serif text-base italic leading-loose text-cream-100/90">
-                              「{card.meditation.affirmation}」
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+            {!oracleText && (
+              <div className="flex h-full min-h-[80px] flex-col items-center justify-center gap-2 text-center">
+                <Sparkles className="h-6 w-6 text-gold-500/40" />
+                <p className="font-serif text-sm text-sage-300/45">點擊下方按鈕，領受來自蘇菲智者的天啟</p>
               </div>
-            );
-          })}
-        </div>
+            )}
 
-        {/* ───── Closing Seal ───── */}
+            {oracleText && (
+              <div key={oracleKey} className="relative z-10 flex flex-col items-center gap-3 animate-fade-in-up text-center">
+                <Lightbulb className="h-6 w-6 text-gold-400/70" />
+                <p className="font-serif text-lg italic leading-loose text-cream-100/90">
+                  「{oracleText}」
+                </p>
+                <div className="h-px w-16 gold-rule opacity-40" />
+              </div>
+            )}
+          </div>
+
+          {/* draw button */}
+          <button
+            onClick={drawOracle}
+            className="group relative inline-flex items-center gap-2.5 rounded-full border-2 border-gold-500/40 bg-gradient-to-br from-velvet-200/60 to-midnight-200/60 px-8 py-3.5 font-serif text-base font-medium text-gold-300 transition-all duration-500 hover:border-gold-500/70 hover:from-velvet-100/60 hover:to-midnight-100/60 hover:shadow-[0_0_25px_rgba(212,175,55,0.20)] active:scale-95"
+          >
+            <span className="pointer-events-none absolute inset-0 rounded-full bg-gold-500/8 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
+            <Sparkles className="h-5 w-5 text-gold-400 transition-transform duration-500 group-hover:rotate-180 group-hover:scale-110" />
+            <span className="relative z-10">{oracleText ? '再抽一次' : '領受天啟'}</span>
+          </button>
+        </section>
+
+        {/* ───── Closing ───── */}
         <div className="mt-12 flex flex-col items-center gap-2 animate-fade-in">
           <div className="flex items-center gap-3 w-full max-w-xs">
             <div className="h-px flex-1 gold-rule opacity-20" />
-            <SufiOrnament size={28} className="opacity-40" color="#D4AF37" />
+            <SufiOrnament size={24} className="opacity-35" color="#D4AF37" />
             <div className="h-px flex-1 gold-rule opacity-20" />
           </div>
-          <p className="font-serif text-xs text-gold-500/35">
+          <p className="font-serif text-xs text-gold-500/30">
             {card.name} · {suit.name} · 第 {card.number} 張
           </p>
         </div>
