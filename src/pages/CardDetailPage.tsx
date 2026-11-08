@@ -160,8 +160,9 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
             <span className="uppercase">{suit.subtitle}</span>
           </div>
 
+          {/* ── Top section: name/tags on left, card image on right ── */}
           <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:gap-12">
-            {/* left column: name → tags → toggle → 牌面解析 text */}
+            {/* left: name → tags → toggle */}
             <div className="flex flex-1 flex-col items-center gap-5 text-center lg:items-start lg:text-left">
               {/* name */}
               <div className="flex flex-col gap-1.5">
@@ -205,32 +206,10 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
                   逆位
                 </button>
               </div>
-
-              {/* 牌面解析 — flows right below the toggle, same column */}
-              <div className="mt-2 w-full">
-                <SectionHeading icon={Feather} title="牌面解析" subtitle="Card Interpretation" />
-
-                <p className="text-sm leading-loose text-sage-100/85">
-                  {meaning.philosophy}
-                </p>
-
-                <GoldDivider />
-
-                <p className="text-sm leading-loose text-sage-100/80">
-                  {meaning.definition}
-                </p>
-
-                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-sage-300/50">
-                  <span>{suit.name} · {suit.element}元素 · {suit.elementArabic}</span>
-                  <span className={`rounded-full px-2.5 py-0.5 ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
-                    {isReversed ? '逆位能量流轉' : '正位之光顯現'}
-                  </span>
-                </div>
-              </div>
             </div>
 
-            {/* right column: card face — stays visible alongside the text */}
-            <div className="relative shrink-0 self-center lg:sticky lg:top-6 lg:self-start">
+            {/* right: card face image */}
+            <div className="relative shrink-0 self-center lg:self-start">
               <div className="pointer-events-none absolute inset-0 -m-4 rounded-2xl bg-gold-500/8 blur-2xl animate-pulse-soft" />
               <div className="relative perspective">
                 <CardArt
@@ -243,6 +222,28 @@ export function CardDetailPage({ cardId, onBack }: CardDetailPageProps) {
                   reversed={isReversed}
                 />
               </div>
+            </div>
+          </div>
+
+          {/* ── 牌面解析 — full width below the top section ── */}
+          <div className="mt-10 w-full">
+            <SectionHeading icon={Feather} title="牌面解析" subtitle="Card Interpretation" />
+
+            <p className="text-sm leading-loose text-sage-100/85">
+              {meaning.philosophy}
+            </p>
+
+            <GoldDivider />
+
+            <p className="text-sm leading-loose text-sage-100/80">
+              {meaning.definition}
+            </p>
+
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-sage-300/50">
+              <span>{suit.name} · {suit.element}元素 · {suit.elementArabic}</span>
+              <span className={`rounded-full px-2.5 py-0.5 ${isReversed ? 'bg-rose-950/50 text-rose-300' : 'bg-emerald-950/50 text-emerald-300'}`}>
+                {isReversed ? '逆位能量流轉' : '正位之光顯現'}
+              </span>
             </div>
           </div>
         </div>
