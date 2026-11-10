@@ -1,6 +1,6 @@
 import { SufiOrnament } from './SufiOrnament';
 
-export type VisualId = 'fool' | 'alchemist' | 'murshida' | 'shahbanu';
+export type VisualId = 'fool' | 'alchemist' | 'murshida' | 'shahbanu' | 'pir' | 'aashiqan' | 'waali' | 'quwwat';
 
 interface CardVisualProps {
   visualId: VisualId;
@@ -556,11 +556,581 @@ function ShahbanuVisual({ className }: { className?: string }) {
   );
 }
 
+/* ============================================================
+   THE HIEROPHANT (5) — Sufi Pir, the spiritual gardener
+   RWS elements: two pillars/acolytes, triple crown, staff,
+   blessing gesture, keys
+   Sufi: Pir as gardener tending seedlings, geometric mirror,
+   golden staff, twin seedlings
+   ============================================================ */
+function PirVisual({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 300" className={className} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id="pir-bg" cx="0.5" cy="0.4" r="0.6">
+          <stop offset="0%" stopColor="#0a3a2f" />
+          <stop offset="50%" stopColor="#041914" />
+          <stop offset="100%" stopColor="#020d0a" />
+        </radialGradient>
+        <radialGradient id="pir-glow" cx="0.5" cy="0.35" r="0.3">
+          <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.14" />
+          <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="pir-staff" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#f4e5ad" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#b8962a" stopOpacity="0.4" />
+        </linearGradient>
+      </defs>
+
+      <rect width="200" height="300" fill="url(#pir-bg)" />
+      <rect width="200" height="300" fill="url(#pir-glow)" />
+
+      {/* faint geometric mirror pattern in background */}
+      <g stroke="#D4AF37" fill="none" opacity="0.07">
+        <circle cx="100" cy="110" r="55" strokeWidth="0.4" />
+        <circle cx="100" cy="110" r="40" strokeWidth="0.3" />
+        <path d="M70,110 L130,110 M100,60 L100,160" strokeWidth="0.3" />
+        <path d="M78,78 L122,142 M122,78 L78,142" strokeWidth="0.2" />
+      </g>
+
+      {/* two pillars (acolytes → twin seedlings) */}
+      <g opacity="0.3">
+        {/* left seedling pillar */}
+        <rect x="38" y="100" width="10" height="160" fill="#0a3a2f" opacity="0.6" rx="2" />
+        <g transform="translate(43,95)" stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.4">
+          <path d="M0,8 Q-4,2 -6,-2" />
+          <path d="M0,8 Q4,2 6,-2" />
+          <path d="M0,8 L0,-4" />
+        </g>
+        {/* right seedling pillar */}
+        <rect x="152" y="100" width="10" height="160" fill="#D4AF37" opacity="0.12" rx="2" />
+        <g transform="translate(157,95)" stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.4">
+          <path d="M0,8 Q-4,2 -6,-2" />
+          <path d="M0,8 Q4,2 6,-2" />
+          <path d="M0,8 L0,-4" />
+        </g>
+      </g>
+
+      {/* Sufi arch connecting pillars */}
+      <path d="M38,105 Q100,65 162,105" stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.2" />
+      <path d="M44,108 Q100,72 156,108" stroke="#D4AF37" strokeWidth="0.3" fill="none" opacity="0.12" />
+
+      {/* keys crossed at bottom */}
+      <g transform="translate(100,255)" opacity="0.25" stroke="#D4AF37" strokeWidth="0.8" fill="none">
+        <g transform="rotate(-25)">
+          <circle cx="-12" cy="0" r="4" />
+          <line x1="-8" y1="0" x2="8" y2="0" />
+          <line x1="6" y1="0" x2="6" y2="4" />
+          <line x1="3" y1="0" x2="3" y2="3" />
+        </g>
+        <g transform="rotate(25)">
+          <circle cx="-12" cy="0" r="4" />
+          <line x1="-8" y1="0" x2="8" y2="0" />
+          <line x1="6" y1="0" x2="6" y2="4" />
+          <line x1="3" y1="0" x2="3" y2="3" />
+        </g>
+      </g>
+
+      {/* the Pir — standing figure with staff */}
+      <g transform="translate(100,85)">
+        {/* turban / triple-crown */}
+        <g opacity="0.5">
+          <path d="M-9,-42 L9,-42 L7,-48 L-7,-48 Z" fill="#D4AF37" />
+          <path d="M-7,-48 L7,-48 L5,-52 L-5,-52 Z" fill="#D4AF37" opacity="0.7" />
+          <path d="M-5,-52 L5,-52 L3,-55 L-3,-55 Z" fill="#D4AF37" opacity="0.5" />
+          {/* jewel on turban */}
+          <circle cx="0" cy="-44" r="1.5" fill="#f4e5ad" opacity="0.6" />
+        </g>
+        {/* face */}
+        <circle cx="0" cy="-35" r="5" fill="#D4AF37" opacity="0.55" />
+        {/* beard */}
+        <path d="M-3,-32 Q0,-25 3,-32" stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.3" />
+        {/* robe */}
+        <path d="M-12,-28 Q-16,-5 -18,30 Q-16,45 -12,50 L12,50 Q16,45 18,30 Q16,-5 12,-28 Z"
+          fill="#D4AF37" opacity="0.2" stroke="#D4AF37" strokeWidth="0.3" />
+        {/* eight-pointed star on chest */}
+        <g transform="translate(0,-10)" opacity="0.4">
+          <path d="M0,-4 L1,-1 L4,0 L1,1 L0,4 L-1,1 L-4,0 L-1,-1 Z" fill="#D4AF37" />
+        </g>
+        {/* right arm — blessing gesture */}
+        <path d="M12,-22 Q18,-18 20,-12" stroke="#D4AF37" strokeWidth="1.2" fill="none" opacity="0.4" />
+        {/* fingers raised */}
+        <line x1="20" y1="-12" x2="22" y2="-16" stroke="#D4AF37" strokeWidth="0.8" opacity="0.4" />
+        <line x1="20" y1="-12" x2="23" y2="-10" stroke="#D4AF37" strokeWidth="0.6" opacity="0.3" />
+        {/* left arm — holding staff */}
+        <path d="M-12,-22 Q-16,-15 -18,-8" stroke="#D4AF37" strokeWidth="1.2" fill="none" opacity="0.4" />
+      </g>
+
+      {/* the staff (triple-cross / Sufi crook) */}
+      <g transform="translate(82,50)" opacity="0.45">
+        <line x1="0" y1="0" x2="0" y2="75" stroke="url(#pir-staff)" strokeWidth="1.8" />
+        {/* Sufi ornament top — triple bar */}
+        <line x1="-5" y1="5" x2="5" y2="5" stroke="#D4AF37" strokeWidth="1" opacity="0.6" />
+        <line x1="-4" y1="10" x2="4" y2="10" stroke="#D4AF37" strokeWidth="0.8" opacity="0.5" />
+        {/* small circle top */}
+        <circle cx="0" cy="0" r="3" fill="none" stroke="#D4AF37" strokeWidth="0.8" opacity="0.5" />
+        <path d="M0,-3 L0,-6 M-2,-5 L2,-5" stroke="#D4AF37" strokeWidth="0.6" opacity="0.4" />
+      </g>
+
+      {/* seedlings being tended at bottom — the gardener metaphor */}
+      <g transform="translate(0,200)" opacity="0.3">
+        {Array.from({ length: 5 }).map((_, i) => {
+          const x = 55 + i * 22;
+          return (
+            <g key={i} transform={`translate(${x},0)`} stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.5">
+              <path d="M0,12 L0,0" />
+              <path d="M0,4 Q-3,1 -4,-2" />
+              <path d="M0,4 Q3,1 4,-2" />
+              <path d="M0,1 Q-2,-1 -3,-4" opacity="0.6" />
+              <path d="M0,1 Q2,-1 3,-4" opacity="0.6" />
+            </g>
+          );
+        })}
+      </g>
+
+      {/* ground line */}
+      <line x1="0" y1="225" x2="200" y2="225" stroke="#D4AF37" strokeWidth="0.3" opacity="0.1" />
+
+      {/* scattered light sparks */}
+      <g fill="#D4AF37" opacity="0.25">
+        <circle cx="35" cy="60" r="0.7" />
+        <circle cx="165" cy="70" r="0.8" />
+        <circle cx="50" cy="130" r="0.6" />
+        <circle cx="155" cy="140" r="0.7" />
+        <circle cx="100" cy="50" r="0.5" />
+      </g>
+    </svg>
+  );
+}
+
+/* ============================================================
+   THE LOVERS (6) — Sufi Aashiqan, complementary golden silhouettes
+   RWS elements: man & woman, angel above, sun, tree of knowledge,
+   garden, five-pointed star
+   Sufi: two complementary golden light silhouettes merging into
+   geometric harmony in the Garden, with a winged presence above
+   ============================================================ */
+function AashiqanVisual({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 300" className={className} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="aash-bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#041914" />
+          <stop offset="40%" stopColor="#0a3a2f" />
+          <stop offset="100%" stopColor="#062821" />
+        </linearGradient>
+        <radialGradient id="aash-sun" cx="0.5" cy="0.15" r="0.2">
+          <stop offset="0%" stopColor="#f4e5ad" stopOpacity="0.5" />
+          <stop offset="40%" stopColor="#D4AF37" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="aash-glow" cx="0.5" cy="0.45" r="0.3">
+          <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      <rect width="200" height="300" fill="url(#aash-bg)" />
+      <rect width="200" height="180" fill="url(#aash-sun)" />
+      <rect width="200" height="300" fill="url(#aash-glow)" />
+
+      {/* sun disk */}
+      <g transform="translate(100,35)" opacity="0.4">
+        <circle r="10" fill="#D4AF37" opacity="0.15" />
+        <circle r="6" fill="#f4e5ad" opacity="0.4" />
+        <g stroke="#D4AF37" strokeWidth="0.4" opacity="0.3">
+          {Array.from({ length: 12 }).map((_, i) => {
+            const a = (i * 30 * Math.PI) / 180;
+            return <line key={i} x1={Math.cos(a) * 9} y1={Math.sin(a) * 9} x2={Math.cos(a) * 16} y2={Math.sin(a) * 16} />;
+          })}
+        </g>
+      </g>
+
+      {/* angel / winged presence above */}
+      <g transform="translate(100,70)" opacity="0.35">
+        {/* head */}
+        <circle cx="0" cy="0" r="4" fill="#D4AF37" opacity="0.5" />
+        {/* wings spread */}
+        <path d="M-4,2 Q-15,5 -22,12 Q-18,8 -10,8 Q-8,6 -4,4 Z" fill="#D4AF37" opacity="0.3" />
+        <path d="M4,2 Q15,5 22,12 Q18,8 10,8 Q8,6 4,4 Z" fill="#D4AF37" opacity="0.3" />
+        {/* body */}
+        <path d="M-3,3 L3,3 L2,14 L-2,14 Z" fill="#D4AF37" opacity="0.2" />
+        {/* small star above */}
+        <path d="M0,-8 L1,-5 L4,-4 L1,-3 L0,-1 L-1,-3 L-4,-4 L-1,-5 Z" fill="#f4e5ad" opacity="0.4" />
+      </g>
+
+      {/* trees on either side (Garden of Eden → Persian garden) */}
+      <g opacity="0.2">
+        {/* left tree */}
+        <path d="M25,180 L24,130 L26,130 L25,180 Z" fill="#1a4d3a" />
+        <circle cx="25" cy="120" r="14" fill="#1a4d3a" opacity="0.4" />
+        <circle cx="18" cy="115" r="8" fill="#1a4d3a" opacity="0.3" />
+        <circle cx="32" cy="118" r="9" fill="#1a4d3a" opacity="0.3" />
+        {/* fruit on tree */}
+        <circle cx="20" cy="125" r="1.5" fill="#c44030" opacity="0.3" />
+        <circle cx="30" cy="120" r="1.2" fill="#c44030" opacity="0.3" />
+        {/* right tree */}
+        <path d="M175,180 L174,130 L176,130 L175,180 Z" fill="#1a4d3a" />
+        <circle cx="175" cy="120" r="14" fill="#1a4d3a" opacity="0.4" />
+        <circle cx="168" cy="115" r="8" fill="#1a4d3a" opacity="0.3" />
+        <circle cx="182" cy="118" r="9" fill="#1a4d3a" opacity="0.3" />
+        <circle cx="170" cy="125" r="1.5" fill="#c44030" opacity="0.3" />
+        <circle cx="180" cy="120" r="1.2" fill="#c44030" opacity="0.3" />
+      </g>
+
+      {/* the two complementary golden silhouettes */}
+      <g transform="translate(100,130)">
+        {/* left figure (feminine) */}
+        <g transform="translate(-18,0)" opacity="0.35">
+          {/* head */}
+          <circle cx="0" cy="0" r="6" fill="#D4AF37" opacity="0.6" />
+          {/* flowing body silhouette */}
+          <path d="M-8,6 Q-12,25 -14,50 Q-12,65 -8,70 L8,70 Q12,65 14,50 Q12,25 8,6 Z"
+            fill="#D4AF37" opacity="0.25" stroke="#D4AF37" strokeWidth="0.3" />
+          {/* hair flowing */}
+          <path d="M-6,-2 Q-10,5 -8,15" stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.3" />
+        </g>
+        {/* right figure (masculine) */}
+        <g transform="translate(18,0)" opacity="0.35">
+          {/* head */}
+          <circle cx="0" cy="0" r="6" fill="#D4AF37" opacity="0.6" />
+          {/* body silhouette */}
+          <path d="M-7,6 Q-10,25 -12,50 Q-10,65 -7,70 L7,70 Q10,65 12,50 Q10,25 7,6 Z"
+            fill="#D4AF37" opacity="0.25" stroke="#D4AF37" strokeWidth="0.3" />
+        </g>
+
+        {/* merging geometric pattern between them */}
+        <g opacity="0.2">
+          <path d="M0,-5 L4,3 L0,11 L-4,3 Z" fill="#D4AF37" />
+          <path d="M0,-8 L6,3 L0,14 L-6,3 Z" fill="none" stroke="#D4AF37" strokeWidth="0.3" />
+          {/* infinity-like bridge between hearts */}
+          <path d="M-8,0 C-8,-5 -4,-5 0,0 C4,5 8,5 8,0 C8,-5 4,-5 0,0 C-4,5 -8,5 -8,0"
+            stroke="#f4e5ad" strokeWidth="0.4" fill="none" opacity="0.4" />
+        </g>
+      </g>
+
+      {/* garden ground / grass */}
+      <g transform="translate(0,200)" opacity="0.15">
+        <line x1="0" y1="0" x2="200" y2="0" stroke="#D4AF37" strokeWidth="0.3" />
+        {Array.from({ length: 12 }).map((_, i) => {
+          const x = 15 + i * 16;
+          return (
+            <g key={i} transform={`translate(${x},0)`} stroke="#1a4d3a" strokeWidth="0.5" fill="none" opacity="0.6">
+              <path d="M0,0 Q-1,-3 -2,-5" />
+              <path d="M0,0 Q1,-3 2,-5" />
+            </g>
+          );
+        })}
+      </g>
+
+      {/* mountain in distance */}
+      <path d="M0,195 L40,165 L70,185 L100,155 L130,180 L160,160 L200,180 L200,200 L0,200 Z"
+        fill="#1a4d3a" opacity="0.2" />
+
+      {/* scattered light sparks (love particles) */}
+      <g fill="#D4AF37" opacity="0.3">
+        <circle cx="60" cy="100" r="0.8" />
+        <circle cx="140" cy="105" r="0.7" />
+        <circle cx="45" cy="150" r="0.6" />
+        <circle cx="155" cy="155" r="0.7" />
+        <circle cx="100" cy="115" r="0.5" />
+        <circle cx="80" cy="180" r="0.6" />
+        <circle cx="120" cy="185" r="0.5" />
+      </g>
+    </svg>
+  );
+}
+
+/* ============================================================
+   THE CHARIOT (7) — Sufi Waali, soul-rider on emerald waves
+   RWS elements: chariot, two sphinxes/horses, canopy of stars,
+   moat/water, warrior with wand
+   Sufi: Waali standing on two golden horses on emerald waves,
+   no reins — pure will and focus
+   ============================================================ */
+function WaaliVisual({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 300" className={className} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="waali-wave" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0a3a2f" />
+          <stop offset="40%" stopColor="#0f4d3c" />
+          <stop offset="70%" stopColor="#0A3A2F" />
+          <stop offset="100%" stopColor="#041914" />
+        </linearGradient>
+        <radialGradient id="waali-glow" cx="0.5" cy="0.3" r="0.3">
+          <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* emerald wave background */}
+      <rect width="200" height="300" fill="url(#waali-wave)" />
+      <rect width="200" height="300" fill="url(#waali-glow)" />
+
+      {/* stars in sky */}
+      <g fill="#D4AF37" opacity="0.3">
+        <circle cx="30" cy="25" r="0.8" />
+        <circle cx="170" cy="20" r="1" />
+        <circle cx="50" cy="45" r="0.6" />
+        <circle cx="150" cy="50" r="0.7" />
+        <circle cx="100" cy="30" r="0.5" />
+        <circle cx="80" cy="60" r="0.6" />
+        <circle cx="130" cy="65" r="0.5" />
+      </g>
+
+      {/* canopy of stars above figure */}
+      <g transform="translate(100,55)" opacity="0.3">
+        <path d="M-30,0 Q0,-15 30,0" stroke="#D4AF37" strokeWidth="0.5" fill="none" />
+        <path d="M-25,3 Q0,-10 25,3" stroke="#D4AF37" strokeWidth="0.3" fill="none" opacity="0.6" />
+        {Array.from({ length: 7 }).map((_, i) => {
+          const x = -25 + i * 8.5;
+          return <path key={i} transform={`translate(${x},-2)`} d="M0,-3 L0.8,-0.8 L3,0 L0.8,0.8 L0,3 L-0.8,0.8 L-3,0 L-0.8,-0.8 Z" fill="#f4e5ad" opacity="0.5" />;
+        })}
+      </g>
+
+      {/* emerald waves — layered */}
+      <g opacity="0.5">
+        <path d="M0,200 Q25,190 50,200 T100,200 T150,200 T200,200 L200,230 L0,230 Z" fill="#0f4d3c" opacity="0.4" />
+        <path d="M0,215 Q25,205 50,215 T100,215 T150,215 T200,215 L200,250 L0,250 Z" fill="#0A3A2F" opacity="0.5" />
+        <path d="M0,230 Q25,220 50,230 T100,230 T150,230 T200,230 L200,300 L0,300 Z" fill="#062821" opacity="0.6" />
+      </g>
+      {/* wave highlights */}
+      <g stroke="#D4AF37" strokeWidth="0.4" fill="none" opacity="0.2">
+        <path d="M0,205 Q25,195 50,205 T100,205 T150,205 T200,205" />
+        <path d="M0,220 Q25,210 50,220 T100,220 T150,220 T200,220" />
+        <path d="M0,235 Q25,225 50,235 T100,235 T150,235 T200,235" />
+      </g>
+
+      {/* the Waali — soul-rider figure standing on chariot platform */}
+      <g transform="translate(100,90)">
+        {/* crown / headpiece */}
+        <path d="M-6,-40 L6,-40 L4,-44 L-4,-44 Z" fill="#D4AF37" opacity="0.5" />
+        {/* star on crown */}
+        <path d="M0,-46 L1,-43 L3,-42 L1,-41 L0,-39 L-1,-41 L-3,-42 L-1,-43 Z" fill="#f4e5ad" opacity="0.6" />
+        {/* head */}
+        <circle cx="0" cy="-34" r="5" fill="#D4AF37" opacity="0.55" />
+        {/* body — armored robe */}
+        <path d="M-10,-28 Q-14,-5 -16,20 Q-14,35 -10,40 L10,40 Q14,35 16,20 Q14,-5 10,-28 Z"
+          fill="#D4AF37" opacity="0.25" stroke="#D4AF37" strokeWidth="0.3" />
+        {/* chest armor — geometric pattern */}
+        <g transform="translate(0,-10)" opacity="0.3">
+          <rect x="-5" y="-3" width="10" height="8" fill="none" stroke="#D4AF37" strokeWidth="0.3" transform="rotate(45 0 1)" />
+        </g>
+        {/* right arm — holding wand forward */}
+        <path d="M10,-22 Q16,-18 20,-12" stroke="#D4AF37" strokeWidth="1.2" fill="none" opacity="0.4" />
+        {/* wand in right hand */}
+        <line x1="20" y1="-12" x2="24" y2="-20" stroke="#f4e5ad" strokeWidth="1.2" opacity="0.6" />
+        <circle cx="24" cy="-20" r="1.5" fill="#f4e5ad" opacity="0.5" />
+        {/* left arm — at side */}
+        <path d="M-10,-22 Q-14,-15 -15,-8" stroke="#D4AF37" strokeWidth="1.2" fill="none" opacity="0.4" />
+      </g>
+
+      {/* chariot platform / stone vehicle */}
+      <g transform="translate(100,135)" opacity="0.4">
+        <rect x="-28" y="0" width="56" height="8" fill="#3a2e15" rx="2" />
+        <rect x="-25" y="8" width="6" height="20" fill="#3a2e15" opacity="0.6" />
+        <rect x="19" y="8" width="6" height="20" fill="#3a2e15" opacity="0.6" />
+        {/* geometric pattern on chariot side */}
+        <g stroke="#D4AF37" strokeWidth="0.3" fill="none" opacity="0.4">
+          <rect x="-10" y="1" width="8" height="6" transform="rotate(45 -6 4)" />
+          <rect x="2" y="1" width="8" height="6" transform="rotate(45 6 4)" />
+        </g>
+      </g>
+
+      {/* two golden horses — no reins */}
+      <g opacity="0.4">
+        {/* left horse */}
+        <g transform="translate(55,170)">
+          <path d="M-10,5 Q-12,-2 -8,-8 Q-4,-12 0,-10 Q4,-8 6,-3 L8,5 L6,5 L4,0 L2,5 L0,5 L-2,0 L-4,5 L-6,5 L-8,0 L-10,5 Z"
+            fill="#D4AF37" opacity="0.5" />
+          {/* mane */}
+          <path d="M-6,-8 Q-8,-12 -6,-15 Q-4,-12 -4,-9" stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.4" />
+          {/* legs */}
+          <line x1="-6" y1="5" x2="-7" y2="18" stroke="#D4AF37" strokeWidth="1" opacity="0.4" />
+          <line x1="4" y1="5" x2="5" y2="18" stroke="#D4AF37" strokeWidth="1" opacity="0.4" />
+        </g>
+        {/* right horse */}
+        <g transform="translate(145,170)">
+          <path d="M10,5 Q12,-2 8,-8 Q4,-12 0,-10 Q-4,-8 -6,-3 L-8,5 L-6,5 L-4,0 L-2,5 L0,5 L2,0 L4,5 L6,5 L8,0 L10,5 Z"
+            fill="#D4AF37" opacity="0.5" />
+          <path d="M6,-8 Q8,-12 6,-15 Q4,-12 4,-9" stroke="#D4AF37" strokeWidth="0.5" fill="none" opacity="0.4" />
+          <line x1="6" y1="5" x2="7" y2="18" stroke="#D4AF37" strokeWidth="1" opacity="0.4" />
+          <line x1="-4" y1="5" x2="-5" y2="18" stroke="#D4AF37" strokeWidth="1" opacity="0.4" />
+        </g>
+      </g>
+
+      {/* light trail behind chariot — movement */}
+      <g opacity="0.15">
+        <path d="M0,140 Q30,130 60,135" stroke="#D4AF37" strokeWidth="0.5" fill="none" />
+        <path d="M0,145 Q20,140 40,142" stroke="#D4AF37" strokeWidth="0.3" fill="none" />
+      </g>
+
+      {/* yin-yang style balance symbol on chariot front */}
+      <g transform="translate(100,139)" opacity="0.3">
+        <circle r="4" fill="none" stroke="#D4AF37" strokeWidth="0.5" />
+        <path d="M0,-4 A4,4 0 0,1 0,4 A2,2 0 0,0 0,0 A2,2 0 0,1 0,-4 Z" fill="#D4AF37" opacity="0.4" />
+        <circle cx="0" cy="-2" r="0.6" fill="#041914" opacity="0.5" />
+        <circle cx="0" cy="2" r="0.6" fill="#D4AF37" opacity="0.5" />
+      </g>
+    </svg>
+  );
+}
+
+/* ============================================================
+   THE STRENGTH (8) — Sufi Quwwat, gentle girl taming the lion
+   RWS elements: woman taming lion, infinity above head,
+   mountains, flowers, gentle hands
+   Sufi: small innocent girl silhouette gently stroking a
+   massive geometric golden lion under a deep emerald night sky
+   ============================================================ */
+function QuwwatVisual({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 300" className={className} preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="quwwat-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#020d0a" />
+          <stop offset="30%" stopColor="#041914" />
+          <stop offset="70%" stopColor="#0a3a2f" />
+          <stop offset="100%" stopColor="#0f4d3c" />
+        </linearGradient>
+        <radialGradient id="quwwat-glow" cx="0.5" cy="0.4" r="0.35">
+          <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.12" />
+          <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="quwwat-lion" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#f4e5ad" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#b8962a" stopOpacity="0.2" />
+        </linearGradient>
+      </defs>
+
+      <rect width="200" height="300" fill="url(#quwwat-sky)" />
+      <rect width="200" height="300" fill="url(#quwwat-glow)" />
+
+      {/* stars */}
+      <g fill="#D4AF37" opacity="0.3">
+        <circle cx="25" cy="20" r="0.8" />
+        <circle cx="175" cy="25" r="1" />
+        <circle cx="50" cy="40" r="0.5" />
+        <circle cx="155" cy="45" r="0.7" />
+        <circle cx="100" cy="18" r="0.6" />
+        <circle cx="75" cy="55" r="0.5" />
+        <circle cx="130" cy="60" r="0.4" />
+      </g>
+
+      {/* infinity symbol (lemniscate) above girl's head */}
+      <g transform="translate(100,70)" stroke="#D4AF37" strokeWidth="1" fill="none" opacity="0.4">
+        <path d="M-12,0 C-12,-6 -6,-6 0,0 C6,6 12,6 12,0 C12,-6 6,-6 0,0 C-6,6 -12,6 -12,0" />
+      </g>
+
+      {/* distant mountains */}
+      <path d="M0,200 L35,170 L60,190 L90,160 L120,185 L150,165 L180,180 L200,175 L200,210 L0,210 Z"
+        fill="#1a4d3a" opacity="0.25" />
+
+      {/* flowers on ground */}
+      <g opacity="0.2" transform="translate(0,235)">
+        {Array.from({ length: 6 }).map((_, i) => {
+          const x = 25 + i * 30;
+          return (
+            <g key={i} transform={`translate(${x},0)`}>
+              <line x1="0" y1="0" x2="0" y2="-8" stroke="#1a4d3a" strokeWidth="0.5" />
+              <circle cx="0" cy="-9" r="2.5" fill="#D4AF37" opacity="0.3" />
+              <circle cx="0" cy="-9" r="1" fill="#f4e5ad" opacity="0.4" />
+            </g>
+          );
+        })}
+      </g>
+
+      {/* the lion — massive, geometric golden lines */}
+      <g transform="translate(120,165)" opacity="0.5">
+        {/* lion body — geometric */}
+        <ellipse cx="0" cy="10" rx="35" ry="22" fill="url(#quwwat-lion)" stroke="#D4AF37" strokeWidth="0.4" opacity="0.5" />
+        {/* mane — radiating geometric spikes */}
+        <g stroke="#D4AF37" strokeWidth="0.6" fill="none" opacity="0.4">
+          {Array.from({ length: 16 }).map((_, i) => {
+            const a = (i * 22.5 * Math.PI) / 180;
+            const r1 = 14;
+            const r2 = 22;
+            return (
+              <line key={i} x1={Math.cos(a) * r1} y1={-10 + Math.sin(a) * r1} x2={Math.cos(a) * r2} y2={-10 + Math.sin(a) * r2} />
+            );
+          })}
+        </g>
+        {/* mane circles */}
+        {Array.from({ length: 12 }).map((_, i) => {
+          const a = (i * 30 * Math.PI) / 180;
+          return <circle key={i} cx={Math.cos(a) * 18} cy={-10 + Math.sin(a) * 18} r="2.5" fill="#D4AF37" opacity="0.2" />;
+        })}
+        {/* head */}
+        <circle cx="0" cy="-10" r="13" fill="#D4AF37" opacity="0.25" stroke="#D4AF37" strokeWidth="0.4" />
+        {/* eyes — closed (tamed, peaceful) */}
+        <path d="M-5,-12 Q-3,-14 -1,-12" stroke="#041914" strokeWidth="0.5" fill="none" opacity="0.5" />
+        <path d="M1,-12 Q3,-14 5,-12" stroke="#041914" strokeWidth="0.5" fill="none" opacity="0.5" />
+        {/* nose */}
+        <path d="M-2,-7 L2,-7 L0,-5 Z" fill="#D4AF37" opacity="0.4" />
+        {/* mouth — gentle */}
+        <path d="M0,-5 Q-3,-2 -5,-3" stroke="#D4AF37" strokeWidth="0.4" fill="none" opacity="0.4" />
+        <path d="M0,-5 Q3,-2 5,-3" stroke="#D4AF37" strokeWidth="0.4" fill="none" opacity="0.4" />
+        {/* front legs */}
+        <path d="M-15,28 L-17,45 M-12,28 L-14,45" stroke="#D4AF37" strokeWidth="1" opacity="0.4" fill="none" />
+        {/* tail */}
+        <path d="M-35,5 Q-45,0 -42,-10" stroke="#D4AF37" strokeWidth="0.8" fill="none" opacity="0.4" />
+        <circle cx="-42" cy="-10" r="2" fill="#D4AF37" opacity="0.3" />
+      </g>
+
+      {/* the small innocent girl — gently stroking the lion */}
+      <g transform="translate(65,130)" opacity="0.4">
+        {/* hair flowing */}
+        <path d="M-8,-12 Q-12,-5 -10,5" stroke="#D4AF37" strokeWidth="0.6" fill="none" opacity="0.4" />
+        <path d="M8,-12 Q12,-5 10,5" stroke="#D4AF37" strokeWidth="0.6" fill="none" opacity="0.4" />
+        {/* head */}
+        <circle cx="0" cy="-8" r="5" fill="#D4AF37" opacity="0.5" />
+        {/* small body — simple dress */}
+        <path d="M-6,-3 Q-8,15 -10,35 L10,35 Q8,15 6,-3 Z"
+          fill="#D4AF37" opacity="0.25" stroke="#D4AF37" strokeWidth="0.3" />
+        {/* flower garland on head */}
+        <g opacity="0.4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <circle key={i} cx={-4 + i * 2} cy={-12} r="1" fill="#D4AF37" opacity="0.5" />
+          ))}
+        </g>
+        {/* right arm — reaching toward lion, gentle stroke */}
+        <path d="M6,0 Q20,5 35,15" stroke="#D4AF37" strokeWidth="1.2" fill="none" opacity="0.45" />
+        {/* hand on lion */}
+        <circle cx="35" cy="15" r="2" fill="#D4AF37" opacity="0.4" />
+        {/* left arm — at side */}
+        <path d="M-6,0 Q-10,10 -12,20" stroke="#D4AF37" strokeWidth="1" fill="none" opacity="0.35" />
+      </g>
+
+      {/* gentle energy field between girl and lion */}
+      <g opacity="0.1">
+        <ellipse cx="90" cy="145" rx="20" ry="10" fill="#D4AF37" opacity="0.3" />
+      </g>
+
+      {/* scattered light sparks (gentle energy) */}
+      <g fill="#D4AF37" opacity="0.25">
+        <circle cx="50" cy="100" r="0.6" />
+        <circle cx="170" cy="110" r="0.7" />
+        <circle cx="40" cy="180" r="0.5" />
+        <circle cx="90" cy="120" r="0.4" />
+        <circle cx="130" cy="140" r="0.5" />
+      </g>
+
+      {/* ground */}
+      <rect x="0" y="245" width="200" height="55" fill="#0f4d3c" opacity="0.15" />
+    </svg>
+  );
+}
+
 const visuals: Record<VisualId, React.FC<{ className?: string }>> = {
   fool: FoolVisual,
   alchemist: AlchemistVisual,
   murshida: MurshidaVisual,
   shahbanu: ShahbanuVisual,
+  pir: PirVisual,
+  aashiqan: AashiqanVisual,
+  waali: WaaliVisual,
+  quwwat: QuwwatVisual,
 };
 
 export function CardVisual({ visualId, className }: CardVisualProps) {
